@@ -392,15 +392,28 @@ a { color: inherit; text-decoration: none; }
   .channel-info { flex-direction: column; text-align: center; }
   .channel-stats { justify-content: center; flex-wrap: wrap; }
   .subscribe-btn { margin-left: 0; }
-  .search-container { display: flex; max-width: 200px; }
-  .search-input { font-size: 12px !important; padding: 6px 10px !important; }
+  .yt-header { padding: 0 8px !important; }
+  .yt-header-left { min-width: auto !important; gap: 8px !important; }
+  .yt-header-left .yt-logo span { display: none; }
+  .yt-header-center { flex: 1; margin: 0 6px !important; max-width: none !important; }
+  .search-container { display: flex; max-width: 100%; width: 100%; }
+  .search-input { font-size: 12px !important; padding: 6px 10px !important; min-width: 0 !important; }
   .search-btn { padding: 6px 10px !important; }
-  .yt-header-right { gap: 4px !important; min-width: auto !important; }
+  .yt-header-right { gap: 4px !important; min-width: auto !important; flex-shrink: 0 !important; }
   .avatar-btn { width: 28px !important; height: 28px !important; flex-shrink: 0 !important; }
+  .notif-bell { flex-shrink: 0 !important; }
   .notif-bell span { font-size: 16px !important; padding: 4px !important; }
-  .notif-dropdown { width: 280px !important; right: -40px !important; }
+  .notif-badge { font-size: 7px !important; top: -2px !important; right: -4px !important; }
+  .notif-dropdown { width: 280px !important; right: -100px !important; }
   .video-page { flex-direction: column; }
   .video-sidebar-right { display: none; }
+}
+@media (max-width: 400px) {
+  .search-container { max-width: 100%; }
+  .yt-header-center { margin: 0 4px !important; }
+  .hamburger { padding: 4px !important; font-size: 16px !important; }
+  .yt-logo-icon { width: 24px !important; height: 17px !important; }
+  .notif-dropdown { right: -120px !important; width: 260px !important; }
 }
 </style>
 </head>
