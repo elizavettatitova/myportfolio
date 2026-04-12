@@ -402,8 +402,8 @@ a { color: inherit; text-decoration: none; }
   .yt-header-right { gap: 4px !important; min-width: auto !important; flex-shrink: 0 !important; }
   .avatar-btn { width: 28px !important; height: 28px !important; flex-shrink: 0 !important; }
   .notif-bell { flex-shrink: 0 !important; }
-  .notif-bell span { font-size: 16px !important; padding: 4px !important; }
-  .notif-badge { font-size: 7px !important; top: -2px !important; right: -4px !important; }
+  .notif-bell > span:first-child { font-size: 16px !important; padding: 4px !important; }
+  .notif-badge { font-size: 0px !important; width: 8px !important; height: 8px !important; padding: 0 !important; top: 2px !important; right: 0 !important; border-radius: 50% !important; }
   .notif-dropdown { width: 280px !important; right: -100px !important; }
   .video-page { flex-direction: column; }
   .video-sidebar-right { display: none; }
@@ -2832,7 +2832,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---------- SEARCH BAR SELF-TYPING ----------
-const sillyQueries = [
+const sillyQueriesDesktop = [
   "how to explain to my mom what i do for work",
   "is there a word for when your side project becomes your whole identity",
   "how to charge more without crying during the call",
@@ -2845,6 +2845,20 @@ const sillyQueries = [
   "accidentally automated my own performance review",
   "my dashboard knows more about my channels than I do",
 ];
+const sillyQueriesMobile = [
+  "explain my job to mom",
+  "side project = whole identity",
+  "youtube but in excel",  // special: gets retyped (index 2)
+  "how to find a rich hus",  // special: gets retyped (index 3)
+  "sheets therapy near me",
+  "automated my own review",
+  "my dashboard > me",
+  "apps script has feelings now",
+  "is this a job or a hobby",
+  "viral videos via spreadsheet",
+];
+const isMobile = () => window.innerWidth <= 700;
+const sillyQueries = isMobile() ? sillyQueriesMobile : sillyQueriesDesktop;
 
 let searchTypingActive = false;
 function startSearchTyping() {
@@ -2868,14 +2882,14 @@ function startSearchTyping() {
       input.value = query.substring(0, i + 1);
       i++;
 
-      // Special queries that get deleted and retyped
-      const specialRewrites = {
-        3: { deleteUntil: 0, replacement: "excel spreadsheet but make it youtube", pause: 1200 },  // "youtube but make it..."
-        4: { deleteUntil: "how to find a ".length, replacement: "how to get hired with a YouTube portfolio", pause: 1800 },  // "rich hus..."
-      };
-      const specialIdx = sillyQueries.indexOf(query);
-      if (specialRewrites[specialIdx] && i === query.length) {
-        const spec = specialRewrites[specialIdx];
+      // Special queries that get deleted and retyped (match by content, not index)
+      const specialRewrites = [
+        { match: "youtube but make it an excel spreadsheet", deleteUntil: 0, replacement: "excel spreadsheet but make it youtube", pause: 1200 },
+        { match: "youtube but in excel", deleteUntil: 0, replacement: "excel but in youtube", pause: 1200 },
+        { match: "how to find a rich hus", deleteUntil: "how to find a ".length, replacement: isMobile() ? "how to get hired w/ a YT portfolio" : "how to get hired with a YouTube portfolio", pause: 1800 },
+      ];
+      const spec = specialRewrites.find(s => s.match === query);
+      if (spec && i === query.length) {
         setTimeout(() => {
           let j = query.length;
           const delInterval = setInterval(() => {
