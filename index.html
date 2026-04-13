@@ -2587,10 +2587,11 @@ body {
 .live-views {
   animation: viewPulse 2s ease-in-out infinite;
 }
-  /* Tooltip for player controls */
+/* Tooltip for player controls */
 .player-controls {
   position: relative;
 }
+
 .player-controls .hint-tooltip {
   display: none;
   position: absolute;
@@ -2603,14 +2604,34 @@ body {
   border-radius: 8px;
   font-size: 13px;
   line-height: 1.5;
-  white-space: nowrap;
+
+  /* ВАЖНЫЕ ИЗМЕНЕНИЯ */
+  white-space: normal;   /* было nowrap — это ломало мобилку */
+  max-width: 260px;      /* ограничивает ширину */
+  text-align: center;
+  word-break: break-word;
+
   pointer-events: none;
   z-index: 100;
   animation: hintPop 0.2s ease;
 }
-.player-controls:hover .hint-tooltip {
-  display: block;
+
+/* hover только для десктопа */
+@media (hover: hover) {
+  .player-controls:hover .hint-tooltip {
+    display: block;
+  }
 }
+
+/* мобильная версия */
+@media (max-width: 768px) {
+  .player-controls .hint-tooltip {
+    font-size: 12px;
+    max-width: 80vw;
+    padding: 8px 12px;
+  }
+}
+
 @keyframes hintPop {
   from { opacity: 0; transform: translateX(-50%) translateY(4px); }
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
