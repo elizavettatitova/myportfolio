@@ -2604,32 +2604,29 @@ body {
   border-radius: 8px;
   font-size: 13px;
   line-height: 1.5;
-
-  /* ВАЖНЫЕ ИЗМЕНЕНИЯ */
-  white-space: normal;   /* было nowrap — это ломало мобилку */
-  max-width: 260px;      /* ограничивает ширину */
-  text-align: center;
-  word-break: break-word;
-
+  
+  /* --- ИЗМЕНЕНИЯ --- */
+  /* Убрали white-space: nowrap; */
+  width: max-content; /* Подстраивает ширину под текст на ПК */
+  max-width: 250px; /* Ограничивает ширину, чтобы текст начал переноситься */
+  text-align: center; /* Центрируем текст для красоты, если строк несколько */
+  margin-bottom: 8px; /* Небольшой отступ снизу, чтобы тултип не прилипал к кнопке */
+  /* ----------------- */
+  
   pointer-events: none;
   z-index: 100;
   animation: hintPop 0.2s ease;
 }
 
-/* hover только для десктопа */
-@media (hover: hover) {
-  .player-controls:hover .hint-tooltip {
-    display: block;
+/* Дополнительная защита для узких мобильных экранов */
+@media (max-width: 480px) {
+  .player-controls .hint-tooltip {
+    max-width: 85vw; /* Тултип займет не больше 85% ширины экрана мобилки */
   }
 }
 
-/* мобильная версия */
-@media (max-width: 768px) {
-  .player-controls .hint-tooltip {
-    font-size: 12px;
-    max-width: 80vw;
-    padding: 8px 12px;
-  }
+.player-controls:hover .hint-tooltip {
+  display: block;
 }
 
 @keyframes hintPop {
