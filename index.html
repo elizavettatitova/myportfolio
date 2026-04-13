@@ -497,7 +497,8 @@ a { color: inherit; text-decoration: none; }
       <div class="player-container">
         <div class="player-demo" id="playerContainer"></div>
         <div class="player-controls">
-          <span class="play-btn">&#9654;</span>
+  <span class="hint-tooltip">bestie, this isn’t a video 🫠 it’s an interactive portfolio — scroll inside ↕ swipe through projects ← → and tap “more” at the bottom 👇</span>
+  <span class="play-btn">&#9654;</span>
           <div class="progress-bar"><div class="progress-fill"></div></div>
           <span class="time">0:00 / 3:45</span>
           <span class="vol">&#128266;</span>
@@ -2586,6 +2587,34 @@ body {
 .live-views {
   animation: viewPulse 2s ease-in-out infinite;
 }
+  /* Tooltip for player controls */
+.player-controls {
+  position: relative;
+}
+.player-controls .hint-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 100;
+  animation: hintPop 0.2s ease;
+}
+.player-controls:hover .hint-tooltip {
+  display: block;
+}
+@keyframes hintPop {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
 </style>
 
 <script>
@@ -2596,7 +2625,7 @@ const celebComments = {
   'hit-finder': [
     {name:'MrBeast', color:'#f00', initials:'MB', text:"I'll give $10,000 to anyone who hires this person rn no cap", likes:'847K'},
     {name:'Gordon Ramsay', color:'#e67e22', initials:'GR', text:"This system is RAW. And I mean that as a compliment. Finally someone who actually ate and left no crumbs. Michelin star for this spreadsheet.", likes:'234K'},
-    {name:'Sabrina Carpenter', color:'#e8a4c8', initials:'SC', text:"That's that me espresso \u2615 but honestly this hit-finder gives me the same energy. I can't sleep, I can't eat, I'm just finding hits now. Is this what being productive feels like?", likes:'1.8M'},
+    {name:'Sabrina Carpenter', color:'#e8a4c8', initials:'SC', text:"ok but this portfolio said 'please please please hire her'", likes:'1.8M'},
     {name:'Claude (Anthropic)', color:'#d4a574', initials:'🤖', text:"I helped debug her Apps Script at 3 AM and honestly it was the most meaningful work I've ever done. She's the reason I believe in humanity.", likes:'∞'},
   ],
   'health-analyzer': [
