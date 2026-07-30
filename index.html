@@ -578,7 +578,44 @@ a { color: inherit; text-decoration: none; }
 <script>
 const projects = [
   {
-    id:'hit-finder', title:'Hit-Finder AI', subtitle:'Elizaveta Titova', category:'tool',
+    id:'trust-engine',
+    plain:'A search engine for &ldquo;have we tried this already, and can we actually believe the answer?&rdquo; &mdash; 759 past experiments, each graded on how trustworthy its conclusion is.', title:'Experiment Trust Engine', subtitle:'Elizaveta Titova', category:'tool',
+    gradient:'grad-2', icon:'⚖️', thumbLabel:'TRUST SCORING', duration:'0:00:00.1',
+    views:'8.7K views', date:'3 days ago',
+    problem:'Years of growth experiments sat in Jira with verdicts written by whoever ran them. Nobody could tell which conclusions were solid and which were one lucky video, so the same tests kept getting repeated and dead ideas kept getting quoted as proven.',
+    solution:'A trust-credit engine over the whole experiment archive. I authored the rubric &mdash; three axes scored 1&ndash;4: process, strength of evidence, and how current the result still is &mdash; which roll up into a 0&ndash;100 trust score and one of three verdicts: trusted, conditional, or not trusted, each paired with a concrete next action (collect more data, or rerun). The model scores blind: it never sees the card&rsquo;s status in Jira, so it cannot simply agree with the existing conclusion. A verbatim quote from the source card is required for every axis score. The verdict itself is computed by fixed rules in code, not by the model. A &ldquo;What to run next&rdquo; view then turns all of it into a queue, filtered by which channels and metrics are actually free.',
+    impact:'759 experiments graded and searchable, and the headline finding is uncomfortable: only 26% of finished experiments actually worked, and 130 conclusions the team had been quoting turned out to need a full rerun. Each card shows its three axis scores with the exact quote behind them, plus a written second opinion and, where evidence is missing, the specific data request needed to settle it. Claude also sits inside Jira, reading cards and leaving its assessment as a comment where the work already happens.',
+    metrics:['759 experiments graded','26% of finished ones worked','130 flagged for a rerun','0 prompt-only verdict rules'],
+    stack:['Supabase / PostgreSQL','Anthropic API','Jira API + Claude in Jira','Blind scoring, verdict rules in code'],
+    demo:'trust-engine'
+  },
+  {
+    id:'policy-qa',
+    plain:'An AI watches every kids&rsquo; video we publish and flags the ones that break child-safety or advertiser rules &mdash; before YouTube finds them.', title:'AI Policy QA (Vision)', subtitle:'Elizaveta Titova', category:'tool',
+    gradient:'grad-9', icon:'🛡️', thumbLabel:'POLICY QA', duration:'24:00:00',
+    views:'7.1K views', date:'5 days ago',
+    problem:'A 100+ channel portfolio can\u2019t be spot-checked by humans, and the two halves live under different rules: content made for children, and general-audience content that has to stay advertiser-friendly. The same frame can be fine in one and a problem in the other. Manual review caught issues weeks late, if at all.',
+    solution:'Vision review of every published video against two separate rubrics &mdash; child-safety standards for made-for-kids content, advertiser-friendly standards for everything else &mdash; written independently rather than as one rubric with exceptions. Every finding comes back as a pair: what is wrong, and what to do about it. Findings are triaged, routed to the responsible manager, and opened as Asana tasks with two-way sync, so resolving the task closes the record. Real catches include factually wrong colour-mixing taught to preschoolers, an undisclosed brand banner running through a kids&rsquo; video, and rapid disjointed cuts a child watching alone cannot follow.',
+    impact:'4,760 videos reviewed in a single month across the kids and general-audience halves of the portfolio. Each flagged video arrives with the specific problem and a concrete fix &mdash; not a score &mdash; assigned to the manager who owns that channel, with an Asana task attached. Tuned deliberately for precision: a QA system that cries wolf gets ignored inside a week.',
+    metrics:['4,760 videos reviewed','2 policy regimes','Auto-routed to owners','Asana task per issue'],
+    stack:['Gemini Vision API','Apps Script','Asana API','Two-way task sync'],
+    demo:'policy-qa'
+  },
+  {
+    id:'archetypes',
+    plain:'Reads competitors&rsquo; videos frame by frame and tells the production team what to film next week.', title:'Archetype Engine', subtitle:'Elizaveta Titova', category:'analytics',
+    gradient:'grad-5', icon:'🎭', thumbLabel:'ARCHETYPES', duration:'3000:00',
+    views:'9.4K views', date:'1 week ago',
+    problem:'In kids\u2019 short-form, what works is visual and specific — a character type, a colour, a kind of motion — and none of it lives in the metadata. Teams were guessing from view counts, which tell you something worked but never what about it worked.',
+    solution:'Frame-level vision analysis turns visual content into queryable data, then clusters it into recurring winning patterns &mdash; archetypes &mdash; each ranked by lift against the category baseline rather than by raw views. The top pattern runs at 1.99x with 99.7M average views across 18 examples. Every archetype carries its niche, format, hook and example videos, and the same evidence generates whole channel concepts with the reasoning attached: this format because its lift is X, this cast because it pairs with archetype Y. A live IP layer tracks which franchises are hot right now, so borrowed characters are identified rather than mistaken for an original trend.',
+    impact:'3.8K videos analysed, 1.3K hits tracked, 96 archetypes ranked by lift, and 774 hit videos enriched with format, hook, cast and niche so anyone can filter to exactly what they need. Production sets a status on each pattern &mdash; shooting, took it, rejected, revisit later &mdash; and everyone sees it, so two teams stop chasing the same idea. A pipeline-health panel shows whether each section refreshed on schedule, because a stale recommendation is worse than none.',
+    metrics:['3.8K videos analysed','96 archetypes ranked','774 hits enriched','Best pattern: 1.99x lift'],
+    stack:['Gemini Vision API','Apps Script','YouTube Data API','Lift-based correlation'],
+    demo:'archetypes'
+  },
+  {
+    id:'hit-finder',
+    plain:'Spots the videos that quietly went viral &mdash; ours and competitors&rsquo; &mdash; so we can make more like them, fast.', title:'Hit-Finder AI', subtitle:'Elizaveta Titova', category:'tool',
     gradient:'grad-1', icon:'🔥', thumbLabel:'VIRAL DETECTION', duration:'4:20:69',
     views:'4.2K views', date:'2 weeks ago',
     problem:'Built a system to track our own channels for reusing successful videos, plus 2000+ competitor channels to spot what\'s performing. Daily scanning across MFK and non-MFK channels in multiple languages.',
@@ -589,7 +626,8 @@ const projects = [
     demo:'hit-finder'
   },
   {
-    id:'health-analyzer', title:'Channel Health Analyzer', subtitle:'Elizaveta Titova', category:'analytics',
+    id:'health-analyzer',
+    plain:'Answers one question for every channel each month: grow it, leave it, or shut it down.', title:'Channel Health Analyzer', subtitle:'Elizaveta Titova', category:'analytics',
     gradient:'grad-2', icon:'🏥', thumbLabel:'HEALTH DIAGNOSTICS', duration:'99:59:59',
     views:'3.8K views', date:'1 month ago',
     problem:'With 100+ channels, identifying underperformers and deciding keep/close/scale required hours of manual review each month.',
@@ -600,7 +638,8 @@ const projects = [
     demo:'health-analyzer'
   },
   {
-    id:'posting-tracker', title:'Posting Tracker', subtitle:'Elizaveta Titova', category:'tool',
+    id:'posting-tracker',
+    plain:'Catches channels that stopped posting, before a week of silence turns into lost views.', title:'Posting Tracker', subtitle:'Elizaveta Titova', category:'tool',
     gradient:'grad-3', icon:'📊', thumbLabel:'POSTING CADENCE', duration:'0:00:01',
     views:'5.1K views', date:'3 weeks ago',
     problem:'Tracking whether 100+ channels posted on schedule across multiple languages and brands was a full-time job.',
@@ -611,7 +650,8 @@ const projects = [
     demo:'posting-tracker'
   },
   {
-    id:'lifecycle', title:'Channel Lifecycle Analyzer', subtitle:'Elizaveta Titova', category:'analytics',
+    id:'lifecycle',
+    plain:'Predicts when a channel will hit its slump, so nobody panics early or gives up too late.', title:'Channel Lifecycle Analyzer', subtitle:'Elizaveta Titova', category:'analytics',
     gradient:'grad-4', icon:'📈', thumbLabel:'LIFECYCLE TRENDS', duration:'∞:∞',
     views:'2.9K views', date:'1 month ago',
     problem:'Channels follow predictable growth-pit-revival cycles, but without data, teams reacted too late to performance dips.',
@@ -622,7 +662,8 @@ const projects = [
     demo:'lifecycle'
   },
   {
-    id:'greenlight', title:'Greenlight Calculator', subtitle:'Elizaveta Titova', category:'analytics',
+    id:'greenlight',
+    plain:'Before money is committed to a new channel, this says whether the maths actually works.', title:'Greenlight Calculator', subtitle:'Elizaveta Titova', category:'analytics',
     gradient:'grad-5', icon:'🚦', thumbLabel:'PROJECT GREENLIGHT', duration:'13:37',
     views:'3.5K views', date:'2 weeks ago',
     problem:'Deciding whether to greenlight new content projects lacked a standardized framework — decisions were gut-based. This was a concept designed to solve it.',
@@ -633,7 +674,8 @@ const projects = [
     demo:'greenlight'
   },
   {
-    id:'gemini-ai', title:'Gemini Package Builder', subtitle:'Elizaveta Titova', category:'tool',
+    id:'gemini-ai',
+    plain:'Feed it a video, get back titles, description, tags, chapters and thumbnail ideas &mdash; in any language, in seconds.', title:'Gemini Package Builder', subtitle:'Elizaveta Titova', category:'tool',
     gradient:'grad-7', icon:'🤖', thumbLabel:'AI ANALYSIS', duration:'π:∞',
     views:'6.2K views', date:'1 week ago',
     problem:'Creating optimized video packaging (titles, thumbnails, descriptions, tags, chapters) and finding competitors required manual work for every single video.',
@@ -644,7 +686,8 @@ const projects = [
     demo:'gemini-ai'
   },
   {
-    id:'distrohub', title:'DistroHub MVP', subtitle:'Elizaveta Titova', category:'tool',
+    id:'distrohub',
+    plain:'One place to decide what gets published where, so 100+ channels stop competing with each other.', title:'DistroHub MVP', subtitle:'Elizaveta Titova', category:'tool',
     gradient:'grad-9', icon:'🚀', thumbLabel:'DISTRIBUTION HUB', duration:'25:08:2026',
     views:'7.1K views', date:'1 week ago',
     problem:'Managing distribution across 100+ channels with no centralized dashboard meant scattered data, missed deadlines, and zero real-time visibility.',
@@ -655,7 +698,8 @@ const projects = [
     demo:'distrohub'
   },
   {
-    id:'mfk-strategy', title:'MFK Strategy Engine', subtitle:'Elizaveta Titova', category:'analytics',
+    id:'mfk-strategy',
+    plain:'Kids&rsquo; channels play by stricter rules. This tells you when to rebrand one, when to pause it, and what recovery normally looks like.', title:'MFK Strategy Engine', subtitle:'Elizaveta Titova', category:'analytics',
     gradient:'grad-11', icon:'👶', thumbLabel:'MFK STRATEGY', duration:'00:??:!!',
     views:'2.8K views', date:'3 weeks ago',
     problem:'Made-for-Kids channels have unique constraints. Strategy decisions around rebranding (longs to shorts, shorts to longs) and pausing channels lacked historical data.',
@@ -666,7 +710,8 @@ const projects = [
     demo:'mfk-strategy'
   },
   {
-    id:'transcript', title:'Video Diagnostics Engine', subtitle:'Elizaveta Titova', category:'analytics',
+    id:'transcript',
+    plain:'Explains why each video worked or didn&rsquo;t &mdash; and what to fix &mdash; without anyone opening YouTube Studio.', title:'Video Diagnostics Engine', subtitle:'Elizaveta Titova', category:'analytics',
     gradient:'grad-12', icon:'🔬', thumbLabel:'VIDEO DIAGNOSTICS', duration:'NaN:NaN',
     views:'3.4K views', date:'2 weeks ago',
     problem:'Understanding per-video performance across the channel required manually checking YouTube Studio for each video — no automated way to spot intro problems, low RPM, or high subscriber conversion.',
@@ -677,7 +722,8 @@ const projects = [
     demo:'transcript'
   },
   {
-    id:'cs-lalalearn', title:'Case Study: La La Learn', subtitle:'Elizaveta Titova', category:'casestudy',
+    id:'cs-lalalearn',
+    plain:'What happens when the whole toolkit is pointed at one channel: educational Shorts scaled to 2.14B views across several languages.', title:'Case Study: La La Learn', subtitle:'Elizaveta Titova', category:'casestudy',
     gradient:'grad-cs1', icon:'🎓', thumbLabel:'LA LA LEARN', duration:'999:99',
     views:'8.5K views', date:'Featured',
     problem:'La La Learn needed to scale educational Shorts content across multiple languages while maintaining quality and engagement.',
@@ -688,7 +734,8 @@ const projects = [
     demo:'cs-lalalearn'
   },
   {
-    id:'cs-kiddyland', title:'Case Study: Kiddyland', subtitle:'Elizaveta Titova', category:'casestudy',
+    id:'cs-kiddyland',
+    plain:'The same playbook under strict kids-content rules: 808M views, built inside the constraints rather than around them.', title:'Case Study: Kiddyland', subtitle:'Elizaveta Titova', category:'casestudy',
     gradient:'grad-cs2', icon:'🎪', thumbLabel:'KIDDYLAND', duration:'∞+1',
     views:'7.2K views', date:'Featured',
     problem:'Kiddyland channels needed strategic growth in the competitive kids content space with MFK constraints.',
@@ -699,7 +746,8 @@ const projects = [
     demo:'cs-kiddyland'
   },
   {
-    id:'cs-bippybop', title:'Case Study: BippyBop', subtitle:'Elizaveta Titova', category:'casestudy',
+    id:'cs-bippybop',
+    plain:'Growth aimed at a ranking, and it landed &mdash; #23 on Tubefilter&rsquo;s top creators list.', title:'Case Study: BippyBop', subtitle:'Elizaveta Titova', category:'casestudy',
     gradient:'grad-cs3', icon:'🎵', thumbLabel:'BIPPYBOP', duration:'#23:TOP',
     views:'9.1K views', date:'Featured',
     problem:'BippyBop aimed to break into top creator rankings — needed aggressive growth strategy with data backing.',
@@ -710,7 +758,8 @@ const projects = [
     demo:'cs-bippybop'
   },
   {
-    id:'realtime-dash', title:'Real-time Dashboard', subtitle:'Elizaveta Titova', category:'tool',
+    id:'realtime-dash',
+    plain:'Every channel&rsquo;s numbers in one place, refreshed automatically each morning.', title:'Real-time Dashboard', subtitle:'Elizaveta Titova', category:'tool',
     gradient:'grad-8', icon:'📺', thumbLabel:'REAL-TIME TRACKING', duration:'24/7/365',
     views:'4.5K views', date:'1 week ago',
     problem:'Tracking video performance across all channels required checking each channel individually — no single source of truth for real-time metrics.',
@@ -724,6 +773,233 @@ const projects = [
 
 function getDemoHTML(demoId) {
   const demos = {
+    'trust-engine': `
+      <div class="ap ap-paper">
+        <div class="tw-hero">
+          <div class="tw-h1">Experiment archive <span>&mdash; trust credit</span></div>
+          <div class="tw-sub">759 experiments &middot; 26% of finished ones worked &middot; 130 waiting on a rerun</div>
+          <div class="tw-kpis">
+            <span><b>759</b><i>total</i></span>
+            <span><b class="g">58</b><i>worked</i></span>
+            <span><b class="r">165</b><i>didn't</i></span>
+            <span><b class="y">23</b><i>running</i></span>
+            <span><b class="b">130</b><i>rerun</i></span>
+            <span><b>344</b><i>dropped</i></span>
+          </div>
+          <div class="tw-sync">Last Jira sync: 2026-07-30 13:56 UTC</div>
+        </div>
+        <div class="tw-tabs">
+          <button class="tw-tab is-on" data-ivtab="te-card">Trust credit</button>
+          <button class="tw-tab" data-ivtab="te-queue">What to run next</button>
+        </div>
+
+        <div class="iv-pane is-on" id="te-card">
+          <div class="tw-body">
+            <div class="tw-verdict">
+              <span class="tw-lab">TRUST CREDIT</span>
+              <span class="tw-pill y">conditional</span>
+              <span class="tw-pill o">collect more data</span>
+              <b class="tw-score">73</b>
+              <span class="tw-meta">sample size unknown &middot; already rolled out</span>
+            </div>
+            <div class="tw-axis" onclick="apT(this)">
+              <div class="tw-ax-h"><span class="tw-ax y">P 2</span><b>process</b><em>tap for the quote</em></div>
+              <p>There is a before/after comparison, but the number of episodes in each group is not stated, and a before/after split risks comparing incomparable periods.</p>
+              <div class="cn-x tw-quote">&ldquo;From episode 315 onward the thumbnails were changed&rdquo;</div>
+            </div>
+            <div class="tw-axis" onclick="apT(this)">
+              <div class="tw-ax-h"><span class="tw-ax g">E 3</span><b>evidence</b><em>tap for the quote</em></div>
+              <p>Absolute before/after figures exist for the target metric, but there is no per-video stability check and the effect itself is small (+0.97pp).</p>
+              <div class="cn-x tw-quote">&ldquo;before &mdash; CTR 7.77%, 8,474,243 impressions, 967,391 views; after &mdash; CTR 8.74%, 8,249,604 impressions, 1,020,957 views&rdquo;</div>
+            </div>
+            <div class="tw-axis" onclick="apT(this)">
+              <div class="tw-ax-h"><span class="tw-ax g">C 4</span><b>currency</b><em>tap for detail</em></div>
+              <p>Finished April 2026, the mechanic is still current, and the platform has not changed anything about thumbnails since.</p>
+              <div class="cn-x tw-quote">No platform changes affecting this mechanic after the completion date.</div>
+            </div>
+            <div class="tw-op">
+              <b>&#128172; Second opinion on the conclusion</b>
+              <p>Partly agree. Aggregate numbers do show CTR rising from 7.77% to 8.74% with views up while impressions dipped, which is consistent with the stated conclusion &mdash; but these are totals with no per-video breakdown and no period control, so the effect is not shown to be stable. Collect per-video data and recompute on medians before rolling this out to other formats.</p>
+            </div>
+            <div class="tw-rec">Recommendation: keep it open, collect more data</div>
+            <div class="tw-req"><b>&#128203; Data request</b> Export the per-episode list before and after #315 &mdash; dates, CTR, impressions, views &mdash; so the group sizes and median CTR can be computed, plus a period split to control for seasonality.</div>
+            <div class="tw-sig">graded 17 Jul 2026 &middot; claude-opus-4-8 &middot; axes scored blind, with no access to the card's status &middot; verdict computed by fixed rules</div>
+            <div class="tw-acts"><span class="tw-btn">&#129302; Ask Claude: worth rerunning?</span><span class="tw-btn">&#8635; Recompute now</span></div>
+          </div>
+        </div>
+
+        <div class="iv-pane" id="te-queue">
+          <div class="tw-body">
+            <div class="tw-kpis tw-kpis2">
+              <span><b class="y">23</b><i>active</i></span>
+              <span><b class="g">25</b><i>free metrics</i></span>
+              <span><b class="g">10</b><i>free channels</i></span>
+              <span><b class="r">275</b><i>rerun</i></span>
+              <span><b class="y">77</b><i>collect data</i></span>
+              <span><b class="b">12</b><i>new</i></span>
+            </div>
+            <p class="iv-hint">Red trust credit, Jira marked for a rerun, or a verified conclusion older than three years. Tap a card for the reasoning.</p>
+            <div class="tw-cards">
+              <div class="tw-c" onclick="apT(this)">
+                <div class="tw-c-h"><b>Daily news posts on two social platforms to lift activity</b><span class="tw-star">&#9733; 15</span></div>
+                <div class="tw-c-chips"><span class="ch r">not trusted &middot; 15</span><span class="ch">other social</span><span class="ch">Followers</span><span class="ch w">&#8987; platform A</span><span class="ch g">&#10003; platform B</span></div>
+                <div class="cn-x">
+                  <p><b>&#129302; Worth it:</b> daily news is a cheap format that rarely drives follower growth on its own, but it fills content gaps and keeps activity up. One of the two platforms is close to dead as a growth channel, so &ldquo;save it&rdquo; is not a realistic goal &mdash; treat it as supporting content, not a subscriber driver.</p>
+                  <p><b>Condition:</b> lock in baseline numbers per platform before starting, and measure follower growth over 3&ndash;4 weeks specifically. Otherwise you get another unverifiable conclusion.</p>
+                </div>
+              </div>
+              <div class="tw-c" onclick="apT(this)">
+                <div class="tw-c-h"><b>Retaining paying subscribers by cross-posting unique content everywhere</b><span class="tw-star">&#9733; 15</span></div>
+                <div class="tw-c-chips"><span class="ch r">not trusted &middot; 25</span><span class="ch">monetisation</span><span class="ch">Donations</span><span class="ch w">&#8987; main channel</span><span class="ch g">&#10003; alt monetisation</span></div>
+                <div class="cn-x">
+                  <p><b>&#129302; Worth it:</b> the last run contradicted itself &mdash; one revenue stream grew while another fell &mdash; with no clean figures, so nothing was concluded. Retention of paying subscribers maps directly to stable channel income, and the platform's own algorithm changes barely matter here because these are external services. Low risk, cheap to launch: it is republishing the same content.</p>
+                  <p><b>Condition:</b> fix baseline retention and churn for each service separately before starting, and compare cohorts &mdash; otherwise it is &ldquo;one went up, one went down&rdquo; again.</p>
+                </div>
+              </div>
+              <div class="tw-c" onclick="apT(this)">
+                <div class="tw-c-h"><b>Replying to top fans' comments to lift engagement</b><span class="tw-star">&#9733; 15</span></div>
+                <div class="tw-c-chips"><span class="ch r">not trusted &middot; 54</span><span class="ch">other social</span><span class="ch">Reach</span><span class="ch g">&#10003; free</span></div>
+                <div class="cn-x">
+                  <p><b>&#129302; Worth it:</b> the previous run showed metrics rising, but the result was contaminated by coinciding with recovery from a visibility penalty, so the effect is unconfirmed. Replying to engaged followers can genuinely lift engagement rate and reach through it, and it costs nothing to produce.</p>
+                  <p><b>Condition:</b> a clean comparison base &mdash; one week without replies, one week with, fixed reach and engagement figures, and no overlap with penalties or anomalies.</p>
+                </div>
+              </div>
+            </div>
+            <div class="tw-lists"><span>&#8635; Rerun 39/275</span><span>&#128203; Collect 12/77</span><span>&#128640; From backlog 12</span><span>&#128161; Synergy 2</span><span>&#9888; Attention 5</span></div>
+          </div>
+        </div>
+        <div class="ap-foot">Syncs from Jira, grades blind, and writes its assessment straight back into the Jira card as a comment &mdash; so the team meets it where they already work.</div>
+      </div>
+`,
+    'policy-qa': `
+      <div class="ap ap-light">
+        <div class="qa-bar"><b>Video QA</b>
+          <span class="qa-seg"><em class="is-on">MFK</em><em>Non-MFK</em><em>All</em></span>
+          <span class="qa-rows">4,760 rows &middot; Jul 2026</span>
+        </div>
+        <div class="qa-tabs"><em class="is-on">My videos</em><em>All videos</em><em>Weekly stats</em></div>
+        <div class="qa-filters">
+          <span>All managers</span><span>Jul 2026</span><span>All channels</span><span>All brand groups</span><span>All actions</span><span>Any length</span>
+        </div>
+        <div class="qa-body">
+          <p class="iv-hint">Green rows passed. Tap a flagged row to see what the vision model found and the fix it wrote.</p>
+          <div class="qa-list">
+            <div class="qa-row ok"><span class="qa-st">ok</span><span class="qa-ch">Tappy Learns</span><span class="qa-ti">Which Emotion Are You Feeling Today</span><span class="qa-nm">31s &middot; 196</span></div>
+            <div class="qa-row ok"><span class="qa-st">ok</span><span class="qa-ch">K-Toon Pop</span><span class="qa-ti">Bubble Wash Time &mdash; Let's Clean Those Legs</span><span class="qa-nm">25s &middot; 1,417</span></div>
+            <div class="qa-row bad" onclick="apT(this)">
+              <span class="qa-st r">PROBLEM</span><span class="qa-ch">La La Learn</span>
+              <span class="qa-ti">Paint With Traffic Light Colors <em class="qa-todo">fix title</em></span>
+              <span class="qa-nm">38s &middot; 21,858</span>
+              <div class="cn-x qa-x">
+                <div class="qa-col"><b>Issue &mdash; hinders comprehension</b><p>The video teaches incorrect colour mixing (purple + orange = red, orange + green = yellow), which is misleading for children learning primary and secondary colours.</p></div>
+                <div class="qa-col fix"><b>Fix</b><p>Make the educational content factually accurate. If the intent is to teach colour mixing, use correct combinations: red + yellow = orange, blue + yellow = green, red + blue = purple.</p></div>
+                <div class="qa-route">Routed to the channel's manager &middot; Asana task created &middot; closing the task closes this record</div>
+              </div>
+            </div>
+            <div class="qa-row ok"><span class="qa-st">ok</span><span class="qa-ch">La La Learn</span><span class="qa-ti">We Helped Teddy Bear Feel Better Again</span><span class="qa-nm">33s &middot; 19,856</span></div>
+            <div class="qa-row bad" onclick="apT(this)">
+              <span class="qa-st r">PROBLEM</span><span class="qa-ch">Kukulearn</span>
+              <span class="qa-ti">Sharing Makes It Better <em class="qa-todo">review</em></span>
+              <span class="qa-nm">43s &middot; 7,852</span>
+              <div class="cn-x qa-x">
+                <div class="qa-col"><b>Issue &mdash; heavily promotional</b><p>The video displays a partnership banner throughout, which is direct brand promotion inside children's content.</p></div>
+                <div class="qa-col fix"><b>Fix</b><p>Remove the partnership banner and any other overt brand promotion from the video.</p></div>
+                <div class="qa-route">This is the category YouTube demonetises for. Caught the same day it published.</div>
+              </div>
+            </div>
+            <div class="qa-row bad" onclick="apT(this)">
+              <span class="qa-st r">PROBLEM</span><span class="qa-ch">FruityLand Kids</span>
+              <span class="qa-ti">A Fruity Feast Begins <em class="qa-todo">review</em></span>
+              <span class="qa-nm">47s &middot; 7,290</span>
+              <div class="cn-x qa-x">
+                <div class="qa-col"><b>Issue &mdash; hard to follow</b><p>Rapid, disjointed cuts between characters performing similar repetitive actions, with no overarching story a child watching alone can follow as one narrative. Also too short to accomplish anything.</p></div>
+                <div class="qa-col fix"><b>Fix</b><p>Build a cohesive story arc connecting the characters and their interactions with the food instead of isolated repeated actions. Add educational elements &mdash; naming the fruits, what they do, how they grow.</p></div>
+                <div class="qa-route">A craft note, not a rule violation &mdash; the same rubric catches both.</div>
+              </div>
+            </div>
+            <div class="qa-row ok"><span class="qa-st">ok</span><span class="qa-ch">FLOOF</span><span class="qa-ti">Oops, Falling Hurts &mdash; Let's Ride Safely</span><span class="qa-nm">44s &middot; 14,032</span></div>
+            <div class="qa-row ok"><span class="qa-st">ok</span><span class="qa-ch">Lillo Learns &amp; Plays</span><span class="qa-ti">Who Grows Into What &mdash; Animal Match Fun</span><span class="qa-nm">34s &middot; 2,647</span></div>
+          </div>
+        </div>
+        <div class="ap-foot">Two rubrics, one pipeline: child-safety standards for kids' content, advertiser-friendly standards for everything else. Every finding ships with a fix, an owner and a task.</div>
+      </div>
+`,
+    'archetypes': `
+      <div class="ap ap-studio">
+        <div class="ks">
+          <aside class="ks-side">
+            <div class="ks-brand"><b>Kids YT Studio</b><i>Data-driven production dashboard</i></div>
+            <nav class="ks-nav">
+              <em>&#128202; Overview</em><em class="is-on">&#127916; What to Shoot</em><em>&#128161; Channel Concepts</em>
+              <em>&#128451; Ideas Archive</em><em>&#128293; IP Opportunities</em><em>&#128200; Correlations</em>
+              <em>&#127942; Top Videos</em>
+            </nav>
+            <div class="ks-upd"><b>Last updates</b><span>Archetypes 2026-07-15</span><span>IP 2026-07-27</span><span>Concepts 2026-07-14</span></div>
+          </aside>
+          <div class="ks-main">
+            <div class="ks-kpis">
+              <div><b>3.8K</b><span>videos analysed</span></div>
+              <div><b>1.3K</b><span>hits tracked</span></div>
+              <div><b>96</b><span>archetypes</span></div>
+              <div><b>774</b><span>hits enriched</span></div>
+            </div>
+            <div class="ks-hot"><b>&#128293; Hot IP right now</b>
+              <span>Mario</span><span>Rapunzel</span><span>Zootopia</span><span>LEGO</span><span>Barbie</span><span>Minecraft</span><span>Paw Patrol</span>
+            </div>
+            <h4 class="ks-h">What to Shoot <em>96 patterns, ranked by lift</em></h4>
+            <p class="iv-hint">Lift means how far above the category baseline this pattern performs. Tap one for the brief and set a status everyone sees.</p>
+            <div class="ks-arch">
+              <div class="ks-a" onclick="apT(this)">
+                <div class="ks-a-h"><b>The 'Kids to the Rescue' Family Short with a Twist</b><span class="ks-lift">1.99&times;</span></div>
+                <div class="ks-a-m">&#11088; Characters &amp; IP &middot; live_action &middot; character_intro hook &middot; 99.7M avg &middot; n=18</div>
+                <div class="cn-x">
+                  <div class="ks-st"><em>Shooting</em><em>Took it</em><em>Rejected</em><em>Revisit later</em></div>
+                  <p>Strongest pattern in the set and backed by 18 examples, not three. Feeds the &ldquo;Kids to the Rescue&rdquo; channel concept, where the cast pairing of parent + child carries its own lift of 1.08.</p>
+                </div>
+              </div>
+              <div class="ks-a" onclick="apT(this)">
+                <div class="ks-a-h"><b>Engaging Live-Action Children's Songs with Dynamic Visual Surprises</b><span class="ks-lift">1.94&times;</span></div>
+                <div class="ks-a-m">&#127925; Songs &amp; Rhymes &middot; live_action &middot; visual_surprise hook &middot; 97.1M avg &middot; n=6</div>
+                <div class="cn-x">
+                  <div class="ks-st"><em>Shooting</em><em>Took it</em><em>Rejected</em><em>Revisit later</em></div>
+                  <p>Nearly as strong as the leader, but on six examples rather than eighteen &mdash; the sample size is shown next to the lift for exactly this reason.</p>
+                </div>
+              </div>
+              <div class="ks-a" onclick="apT(this)">
+                <div class="ks-a-h"><b>Exaggerated Mess &amp; Satisfying Clean-Up</b><span class="ks-lift">1.79&times;</span></div>
+                <div class="ks-a-m">&#129380; Routines &amp; Care &middot; live_action &middot; visual_surprise hook &middot; 89.5M avg &middot; n=32</div>
+                <div class="cn-x">
+                  <div class="ks-st"><em>Shooting</em><em>Took it</em><em>Rejected</em><em>Revisit later</em></div>
+                  <p>The most reliable pattern here &mdash; 32 examples. Lower ceiling than the top two, far higher confidence. Works child-only, which makes it cheap to shoot.</p>
+                </div>
+              </div>
+              <div class="ks-a" onclick="apT(this)">
+                <div class="ks-a-h"><b>Interactive Assembly &amp; Learning Transformation</b><span class="ks-lift">1.67&times;</span></div>
+                <div class="ks-a-m">&#127891; Learning &amp; School &middot; mixed live action + animation &middot; transformation hook &middot; 83.5M avg &middot; n=24</div>
+                <div class="cn-x">
+                  <div class="ks-st"><em>Shooting</em><em>Took it</em><em>Rejected</em><em>Revisit later</em></div>
+                  <p>Interesting case: the mixed format scores only 0.97 on its own, yet inside this archetype it reaches 1.67. The pattern is doing the work, not the format &mdash; which is why concepts cite the archetype rather than the format alone.</p>
+                </div>
+              </div>
+            </div>
+            <h4 class="ks-h">Top Videos <em>774 hits, filterable</em></h4>
+            <div class="ks-tv">
+              <div class="ks-v"><b>Winter Clothes for Kids</b><i>Kidshire &middot; Learning &amp; School &middot; mixed &middot; transformation</i><span>560.6M</span><em>49d to hit</em></div>
+              <div class="ks-v"><b>Build a Funny Body Game!</b><i>Toony Friends TV &middot; Games &amp; Challenges &middot; live_action &middot; visual_surprise</i><span>502M</span><em class="fast">16d to hit</em></div>
+              <div class="ks-v"><b>Clean Feet Routine</b><i>MEOWJI &middot; Routines &amp; Care &middot; live_action &middot; visual_surprise</i><span>351.7M</span><em class="fast">5d to hit</em></div>
+              <div class="ks-v"><b>Drawing Turtle Relay Challenge!</b><i>Billy Blip Boss &middot; Games &amp; Challenges &middot; live_action &middot; transformation</i><span>308.2M</span><em class="fast">13d to hit</em></div>
+            </div>
+            <div class="ks-health"><b>&#9881; Pipeline health</b>
+              <span class="ok">IP Opportunities (weekly) &mdash; 4d ago</span>
+              <span class="ok">Archetypes (monthly) &mdash; 15d ago</span>
+              <span class="ok">Channel Concepts (monthly) &mdash; 16d ago</span>
+              <i>Green means it refreshed inside its window. A stale recommendation is worse than none.</i>
+            </div>
+          </div>
+        </div>
+        <div class="ap-foot">Frame-level vision analysis becomes ranked patterns, then production briefs &mdash; with statuses everyone shares, so two teams never chase the same idea.</div>
+      </div>
+`,
     'hit-finder': `
       <div class="demo-header"><div class="sheets-logo">📊</div> Hit-Finder AI — Daily Viral Detection</div>
       <div style="display:flex;gap:4px;margin-bottom:8px;padding:4px;">
@@ -732,106 +1008,99 @@ function getDemoHTML(demoId) {
         <button onclick="document.querySelectorAll('.hf-tab').forEach(t=>t.style.display='none');document.getElementById('hf-trends').style.display='block';this.style.background='#4285f4';this.style.color='#fff';this.parentElement.querySelectorAll('button').forEach(b=>{if(b!==this){b.style.background='#333';b.style.color='#aaa'}})" style="padding:6px 14px;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;background:#333;color:#aaa;">Trends & Insights</button>
       </div>
       <div id="hf-mfk" class="hf-tab" style="display:block;">
-        <table class="demo-table">
-          <tr><th>Channel</th><th>Title</th><th>Published</th><th>Views</th><th>Status</th><th>Days to Hit</th><th>Tags</th></tr>
-          <tr class="highlight-green"><td>BubbleBoo</td><td>🦷 What's STUCK in Your TEETH? Let's FIX it!</td><td>22.02.2026</td><td>340.9M</td><td><span class="badge badge-green">HIT</span></td><td>45</td><td>teeth, magic</td></tr>
-          <tr class="highlight-green"><td>KittyToon Zoo</td><td>🌟 One-Ingredient Wonder: Magic Ball!</td><td>22.02.2026</td><td>170.9M</td><td><span class="badge badge-green">HIT</span></td><td>45</td><td>colors, magic, play</td></tr>
-          <tr class="highlight-green"><td>Meowji</td><td>Why Is Washing Your Feet Important? 🧼🦵</td><td>25.02.2026</td><td>424.0M</td><td><span class="badge badge-green">HIT</span></td><td>42</td><td>hygiene, body</td></tr>
-          <tr><td>Quizzlepop</td><td>What Happens When Orange Meets Purple? 😲🎨</td><td>22.02.2026</td><td>7.7M</td><td><span class="badge badge-green">HIT</span></td><td>45</td><td>kids, learning, colors</td></tr>
-          <tr><td>Little Whys</td><td>🎂 How Did The Cake Appear? #kidsstories</td><td>23.02.2026</td><td>8.3M</td><td><span class="badge badge-green">HIT</span></td><td>44</td><td>kids, story, food</td></tr>
-          <tr><td>SuPaBoo</td><td>Learn Vehicles: What Does Each Car Do? 🚒🚓</td><td>22.02.2026</td><td>15.2M</td><td><span class="badge badge-green">HIT</span></td><td>45</td><td>learning, vehicles</td></tr>
-          <tr><td>Toddler Zoo</td><td>Give Me a Bandage Song | Safety Rules</td><td>23.02.2026</td><td>29.9M</td><td><span class="badge badge-green">HIT</span></td><td>44</td><td>kids, song, learning</td></tr>
-          <tr><td>KIDZOKI</td><td>🏠 How Many HAMSTERS? #kids #fun</td><td>23.02.2026</td><td>3.9M</td><td><span class="badge badge-green">HIT</span></td><td>44</td><td>kids, fun, holiday</td></tr>
-          <tr><td>KIDZOKI</td><td>Good Food vs Junk Food 🍎🍟</td><td>22.02.2026</td><td>2.6M</td><td><span class="badge badge-green">HIT</span></td><td>45</td><td>kids, learning, food</td></tr>
-          <tr><td>VocaVoca</td><td>Baby Healthy Food | Cartoon</td><td>23.02.2026</td><td>1.9M</td><td><span class="badge badge-green">HIT</span></td><td>44</td><td>baby, food, healthy</td></tr>
-          <tr><td>Viv and Denny</td><td>¿Quién robó mi regalo? 👻⛱️</td><td>22.02.2026</td><td>4.4M</td><td><span class="badge badge-green">HIT</span></td><td>45</td><td>a, b, c</td></tr>
-          <tr><td>Meowji</td><td>Dad vs Kid Challenge! 😆👨‍👧</td><td>23.02.2026</td><td>12.4M</td><td><span class="badge badge-green">HIT</span></td><td>44</td><td>kids, learning, daddy</td></tr>
-        </table>
+        <div class="dv-list"><div class="dv-search"><input class="dv-q" type="text" placeholder="Filter 12 rows..." oninput="dvFilter(this)"></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">BubbleBoo</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>22.02.2026</b></span><span><i>Views</i><b>340.9M</b></span><span><i>Days to Hit</i><b>45</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>teeth, magic</b></div><div class="dv-note"><i>Title</i><p>🦷 What's STUCK in Your TEETH? Let's FIX it!</p></div></div></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">KittyToon Zoo</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>22.02.2026</b></span><span><i>Views</i><b>170.9M</b></span><span><i>Days to Hit</i><b>45</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>colors, magic, play</b></div><div class="dv-note"><i>Title</i><p>🌟 One-Ingredient Wonder: Magic Ball!</p></div></div></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Meowji</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>25.02.2026</b></span><span><i>Views</i><b>424.0M</b></span><span><i>Days to Hit</i><b>42</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>hygiene, body</b></div><div class="dv-note"><i>Title</i><p>Why Is Washing Your Feet Important? 🧼🦵</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Quizzlepop</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>22.02.2026</b></span><span><i>Views</i><b>7.7M</b></span><span><i>Days to Hit</i><b>45</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>kids, learning, colors</b></div><div class="dv-note"><i>Title</i><p>What Happens When Orange Meets Purple? 😲🎨</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Little Whys</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>23.02.2026</b></span><span><i>Views</i><b>8.3M</b></span><span><i>Days to Hit</i><b>44</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>kids, story, food</b></div><div class="dv-note"><i>Title</i><p>🎂 How Did The Cake Appear? #kidsstories</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">SuPaBoo</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>22.02.2026</b></span><span><i>Views</i><b>15.2M</b></span><span><i>Days to Hit</i><b>45</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>learning, vehicles</b></div><div class="dv-note"><i>Title</i><p>Learn Vehicles: What Does Each Car Do? 🚒🚓</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Toddler Zoo</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>23.02.2026</b></span><span><i>Views</i><b>29.9M</b></span><span><i>Days to Hit</i><b>44</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>kids, song, learning</b></div><div class="dv-note"><i>Title</i><p>Give Me a Bandage Song | Safety Rules</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">KIDZOKI</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>🏠 How Many HAMSTERS? #kids #fun</b></span><span><i>Published</i><b>23.02.2026</b></span><span><i>Views</i><b>3.9M</b></span></div><div class="dv-more"><div class="dv-f"><i>Days to Hit</i><b>44</b></div><div class="dv-f"><i>Tags</i><b>kids, fun, holiday</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">KIDZOKI</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>Good Food vs Junk Food 🍎🍟</b></span><span><i>Published</i><b>22.02.2026</b></span><span><i>Views</i><b>2.6M</b></span></div><div class="dv-more"><div class="dv-f"><i>Days to Hit</i><b>45</b></div><div class="dv-f"><i>Tags</i><b>kids, learning, food</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">VocaVoca</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>Baby Healthy Food | Cartoon</b></span><span><i>Published</i><b>23.02.2026</b></span><span><i>Views</i><b>1.9M</b></span></div><div class="dv-more"><div class="dv-f"><i>Days to Hit</i><b>44</b></div><div class="dv-f"><i>Tags</i><b>baby, food, healthy</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Viv and Denny</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>¿Quién robó mi regalo? 👻⛱️</b></span><span><i>Published</i><b>22.02.2026</b></span><span><i>Views</i><b>4.4M</b></span></div><div class="dv-more"><div class="dv-f"><i>Days to Hit</i><b>45</b></div><div class="dv-f"><i>Tags</i><b>a, b, c</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Meowji</span><span class="dv-chips"><span class="badge badge-green">HIT</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>Dad vs Kid Challenge! 😆👨‍👧</b></span><span><i>Published</i><b>23.02.2026</b></span><span><i>Views</i><b>12.4M</b></span></div><div class="dv-more"><div class="dv-f"><i>Days to Hit</i><b>44</b></div><div class="dv-f"><i>Tags</i><b>kids, learning, daddy</b></div></div></div></div>
       </div>
       <div id="hf-nonmfk" class="hf-tab" style="display:none;">
-        <table class="demo-table">
-          <tr><th>Channel</th><th>Title</th><th>Published</th><th>Views</th><th>Locale</th><th>Tags</th><th>Topic</th></tr>
-          <tr class="highlight-green"><td>김프로KIMPRO</td><td>승자는 누구?🤔 | 똑같은 그림 찾기🔎</td><td>04.01.2026</td><td>177.7M</td><td>EN</td><td>challenge</td><td>challenge</td></tr>
-          <tr class="highlight-green"><td>김프로KIMPRO</td><td>사과를 먹고 싶은 엄마를 위한 아이디어🍎💡</td><td>23.12.2025</td><td>96.1M</td><td>EN</td><td>diy_hacks</td><td>diy_hacks</td></tr>
-          <tr class="highlight-green"><td>Jayllnn</td><td>I CANT BELIEVE THIS HAPPENED</td><td>03.01.2026</td><td>84.8M</td><td>EN</td><td>storytime</td><td>storytime</td></tr>
-          <tr class="highlight-green"><td>MrBeast</td><td>Pass the Phone</td><td>10.01.2026</td><td>75.6M</td><td>EN</td><td>tech_phone</td><td>tech_phone</td></tr>
-          <tr><td>عائلة حمودي وفطومه</td><td>ايس كريم طاح في التراب</td><td>11.12.2025</td><td>38.5M</td><td>AR</td><td>—</td><td>—</td></tr>
-          <tr><td>Rowheim Farooqui</td><td>WHY ITALIAN PASTA TASTES BEST🔥</td><td>19.11.2025</td><td>33.0M</td><td>EN</td><td>food_snacks</td><td>food_snacks</td></tr>
-          <tr><td>Mary Allyson</td><td>Blindfold CUPCAKE Challenge (pt. 3)</td><td>01.11.2025</td><td>31.1M</td><td>EN</td><td>challenge</td><td>challenge</td></tr>
-          <tr><td>Cat the Star</td><td>Geometry Dash (Love for Honey)</td><td>06.11.2025</td><td>27.4M</td><td>EN</td><td>—</td><td>—</td></tr>
-          <tr><td>Софья Темникова</td><td>BMW technology</td><td>24.10.2025</td><td>22.8M</td><td>EN</td><td>gadgets_tools</td><td>gadgets_tools</td></tr>
-          <tr><td>Jenny Hoyos</td><td>Prank Gone Wrong! 😭</td><td>27.12.2025</td><td>21.8M</td><td>EN</td><td>prank</td><td>prank</td></tr>
-        </table>
+        <div class="dv-list"><div class="dv-search"><input class="dv-q" type="text" placeholder="Filter 10 rows..." oninput="dvFilter(this)"></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">김프로KIMPRO</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>승자는 누구?🤔 | 똑같은 그림 찾기🔎</b></span><span><i>Published</i><b>04.01.2026</b></span><span><i>Views</i><b>177.7M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>challenge</b></div><div class="dv-f"><i>Topic</i><b>challenge</b></div></div></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">김프로KIMPRO</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>사과를 먹고 싶은 엄마를 위한 아이디어🍎💡</b></span><span><i>Published</i><b>23.12.2025</b></span><span><i>Views</i><b>96.1M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>diy_hacks</b></div><div class="dv-f"><i>Topic</i><b>diy_hacks</b></div></div></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Jayllnn</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>I CANT BELIEVE THIS HAPPENED</b></span><span><i>Published</i><b>03.01.2026</b></span><span><i>Views</i><b>84.8M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>storytime</b></div><div class="dv-f"><i>Topic</i><b>storytime</b></div></div></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">MrBeast</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>Pass the Phone</b></span><span><i>Published</i><b>10.01.2026</b></span><span><i>Views</i><b>75.6M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>tech_phone</b></div><div class="dv-f"><i>Topic</i><b>tech_phone</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">عائلة حمودي وفطومه</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>ايس كريم طاح في التراب</b></span><span><i>Published</i><b>11.12.2025</b></span><span><i>Views</i><b>38.5M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>AR</b></div><div class="dv-f"><i>Tags</i><b>—</b></div><div class="dv-f"><i>Topic</i><b>—</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Rowheim Farooqui</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>WHY ITALIAN PASTA TASTES BEST🔥</b></span><span><i>Published</i><b>19.11.2025</b></span><span><i>Views</i><b>33.0M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>food_snacks</b></div><div class="dv-f"><i>Topic</i><b>food_snacks</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Mary Allyson</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Published</i><b>01.11.2025</b></span><span><i>Views</i><b>31.1M</b></span><span><i>Locale</i><b>EN</b></span></div><div class="dv-more"><div class="dv-f"><i>Tags</i><b>challenge</b></div><div class="dv-f"><i>Topic</i><b>challenge</b></div><div class="dv-note"><i>Title</i><p>Blindfold CUPCAKE Challenge (pt. 3)</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Cat the Star</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>Geometry Dash (Love for Honey)</b></span><span><i>Published</i><b>06.11.2025</b></span><span><i>Views</i><b>27.4M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>—</b></div><div class="dv-f"><i>Topic</i><b>—</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Софья Темникова</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>BMW technology</b></span><span><i>Published</i><b>24.10.2025</b></span><span><i>Views</i><b>22.8M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>gadgets_tools</b></div><div class="dv-f"><i>Topic</i><b>gadgets_tools</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Jenny Hoyos</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Title</i><b>Prank Gone Wrong! 😭</b></span><span><i>Published</i><b>27.12.2025</b></span><span><i>Views</i><b>21.8M</b></span></div><div class="dv-more"><div class="dv-f"><i>Locale</i><b>EN</b></div><div class="dv-f"><i>Tags</i><b>prank</b></div><div class="dv-f"><i>Topic</i><b>prank</b></div></div></div></div>
       </div>
       <div id="hf-trends" class="hf-tab" style="display:none;">
         <div style="font-weight:700;margin-bottom:8px;font-size:13px;color:#333;">📊 Tag & Pair Insights (7-day)</div>
-        <table class="demo-table">
-          <tr><th>Type</th><th>Key</th><th>Count 7d</th><th>Avg Views</th><th>Score</th></tr>
-          <tr class="highlight-green"><td>tag</td><td>halloween</td><td>4</td><td>27.9M</td><td><b>43</b></td></tr>
-          <tr><td>pair</td><td>magic + vehicles</td><td>2</td><td>29.0M</td><td><b>30</b></td></tr>
-          <tr><td>pair</td><td>english + fun</td><td>2</td><td>23.1M</td><td><b>29</b></td></tr>
-          <tr><td>pair</td><td>halloween + kids</td><td>2</td><td>22.1M</td><td><b>29</b></td></tr>
-          <tr><td>pair</td><td>a + healthy-habits</td><td>2</td><td>12.9M</td><td><b>19</b></td></tr>
-          <tr><td>tag</td><td>music</td><td>1</td><td>66.5M</td><td><b>16</b></td></tr>
-        </table>
+        <div class="dv-list"><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">tag</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Key</i><b>halloween</b></span><span><i>Count 7d</i><b>4</b></span><span><i>Avg Views</i><b>27.9M</b></span></div><div class="dv-more"><div class="dv-f"><i>Score</i><b><b>43</b></b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">pair</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Key</i><b>magic + vehicles</b></span><span><i>Count 7d</i><b>2</b></span><span><i>Avg Views</i><b>29.0M</b></span></div><div class="dv-more"><div class="dv-f"><i>Score</i><b><b>30</b></b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">pair</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Key</i><b>english + fun</b></span><span><i>Count 7d</i><b>2</b></span><span><i>Avg Views</i><b>23.1M</b></span></div><div class="dv-more"><div class="dv-f"><i>Score</i><b><b>29</b></b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">pair</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Key</i><b>halloween + kids</b></span><span><i>Count 7d</i><b>2</b></span><span><i>Avg Views</i><b>22.1M</b></span></div><div class="dv-more"><div class="dv-f"><i>Score</i><b><b>29</b></b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">pair</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Key</i><b>a + healthy-habits</b></span><span><i>Count 7d</i><b>2</b></span><span><i>Avg Views</i><b>12.9M</b></span></div><div class="dv-more"><div class="dv-f"><i>Score</i><b><b>19</b></b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">tag</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Key</i><b>music</b></span><span><i>Count 7d</i><b>1</b></span><span><i>Avg Views</i><b>66.5M</b></span></div><div class="dv-more"><div class="dv-f"><i>Score</i><b><b>16</b></b></div></div></div></div>
         <div style="font-weight:700;margin:12px 0 8px;font-size:13px;color:#333;">🔄 Channel Reuse Suggestions</div>
-        <table class="demo-table">
-          <tr><th>Channel</th><th>Driving Tags</th><th>Suggested Direction</th></tr>
-          <tr><td><b>BippyBop</b></td><td>paper-craft, pets, accessories</td><td>Strengthen growing tags through smart cross-reuse</td></tr>
-          <tr><td><b>Billy Blip Boss</b></td><td>shapes, kitchen, surprise</td><td>Kitchen: food-play or edible craft content</td></tr>
-          <tr><td><b>Meowji</b></td><td>reverse-play, healthy-habits, weather</td><td>Weather as plot trigger (umbrella, sunglasses)</td></tr>
-        </table>
+        <div class="dv-list"><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">BippyBop</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Driving Tags</i><b>paper-craft, pets, accessories</b></span></div><div class="dv-more"><div class="dv-note"><i>Suggested Direction</i><p>Strengthen growing tags through smart cross-reuse</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Billy Blip Boss</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Driving Tags</i><b>shapes, kitchen, surprise</b></span></div><div class="dv-more"><div class="dv-note"><i>Suggested Direction</i><p>Kitchen: food-play or edible craft content</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Meowji</span><span class="dv-caret">&#8250;</span></div><div class="dv-more"><div class="dv-note"><i>Driving Tags</i><p>reverse-play, healthy-habits, weather</p></div><div class="dv-note"><i>Suggested Direction</i><p>Weather as plot trigger (umbrella, sunglasses)</p></div></div></div></div>
       </div>`,
 
     'health-analyzer': `
-      <div class="demo-header"><div class="sheets-logo">📊</div> Channel Health Analyzer — Monthly Review</div>
-      <table class="demo-table">
-        <tr><th>Channel</th><th>Age</th><th>Monetized?</th><th>Views (3mo)</th><th>3-Mo Trend</th><th>Action</th><th>Notes</th></tr>
-        <tr class="highlight-green"><td>🎨 CraftyPanda_EN</td><td>18mo</td><td>✅ Yes</td><td>42.1M</td><td class="trend-up">▲ +34%</td><td><span class="badge badge-green">SCALE</span></td><td>Consistent growth, high engagement</td></tr>
-        <tr class="highlight-green"><td>🎵 MelodyBugs_PT</td><td>14mo</td><td>✅ Yes</td><td>28.7M</td><td class="trend-up">▲ +22%</td><td><span class="badge badge-green">KEEP</span></td><td>Steady performer, good retention</td></tr>
-        <tr><td>🐕 PawPals_ES</td><td>11mo</td><td>✅ Yes</td><td>15.3M</td><td>→ +3%</td><td><span class="badge badge-green">KEEP</span></td><td>Flat but stable, needs refresh</td></tr>
-        <tr class="highlight-yellow"><td>🧩 PuzzleKids_FR</td><td>8mo</td><td>⏳ Pending</td><td>8.2M</td><td class="trend-down">▼ -12%</td><td><span class="badge badge-yellow">KEEP</span></td><td>Declining, try new content style</td></tr>
-        <tr class="highlight-yellow"><td>🎭 FunnyFaces_DE</td><td>6mo</td><td>❌ No</td><td>4.5M</td><td class="trend-down">▼ -18%</td><td><span class="badge badge-yellow">KEEP</span></td><td>Not monetized yet, needs push</td></tr>
-        <tr class="highlight-red"><td>📚 StoryTime_IT</td><td>4mo</td><td>❌ No</td><td>1.2M</td><td class="trend-down">▼ -45%</td><td><span class="badge badge-red">CLOSE</span></td><td>Steep decline, low engagement</td></tr>
-        <tr class="highlight-red"><td>🎪 SillyShow_RU</td><td>3mo</td><td>❌ No</td><td>0.8M</td><td class="trend-down">▼ -52%</td><td><span class="badge badge-red">CLOSE</span></td><td>No traction after 3 months</td></tr>
-      </table>`,
+      <div class="ap ap-mint">
+        <div class="ap-bar"><span class="ap-dots"><i></i><i></i><i></i></span><span class="ap-name">Channel Health &mdash; Monthly Review</span><span class="ap-live">RULES v4</span></div>
+        <div class="ap-kpis">
+          <div class="ap-kpi"><b>7</b><span>reviewed</span></div>
+          <div class="ap-kpi ok"><b>1</b><span>scale</span></div>
+          <div class="ap-kpi"><b>4</b><span>keep</span></div>
+          <div class="ap-kpi bad"><b>2</b><span>close</span></div>
+          <div class="ap-kpi"><b>30 min</b><span>was 2 days</span></div>
+        </div>
+        <div class="ap-body"><div class="cn">
+          <div class="cn-row ok" onclick="apT(this)"><div class="cn-l"><span class="cn-v vg">SCALE</span></div><div class="cn-m"><b>&#127912; CraftyPanda_EN</b><i>18mo &middot; monetized &middot; 42.1M / 3mo</i></div><div class="cn-r"><span class="cn-d up">&#9650; 34%</span><span class="cn-bar"><em class="up" style="width:88%"></em></span></div><div class="cn-x">Consistent growth, high engagement. Rule fired: 3-month trend above +25% with monetization active &rarr; increase output.</div></div>
+          <div class="cn-row ok" onclick="apT(this)"><div class="cn-l"><span class="cn-v vg">KEEP</span></div><div class="cn-m"><b>&#127925; MelodyBugs_PT</b><i>14mo &middot; monetized &middot; 28.7M / 3mo</i></div><div class="cn-r"><span class="cn-d up">&#9650; 22%</span><span class="cn-bar"><em class="up" style="width:74%"></em></span></div><div class="cn-x">Steady performer, good retention. No action required.</div></div>
+          <div class="cn-row" onclick="apT(this)"><div class="cn-l"><span class="cn-v vg">KEEP</span></div><div class="cn-m"><b>&#128021; PawPals_ES</b><i>11mo &middot; monetized &middot; 15.3M / 3mo</i></div><div class="cn-r"><span class="cn-d flat">&rarr; 3%</span><span class="cn-bar"><em class="flat" style="width:52%"></em></span></div><div class="cn-x">Flat but stable, needs a format refresh before it drifts down.</div></div>
+          <div class="cn-row warn" onclick="apT(this)"><div class="cn-l"><span class="cn-v vy">KEEP</span></div><div class="cn-m"><b>&#129513; PuzzleKids_FR</b><i>8mo &middot; monetization pending &middot; 8.2M / 3mo</i></div><div class="cn-r"><span class="cn-d dn">&#9660; 12%</span><span class="cn-bar"><em class="dn" style="width:38%"></em></span></div><div class="cn-x">Declining, but held rather than closed: monetization is still pending, so the revenue rule cannot fire yet. Try a new content style first.</div></div>
+          <div class="cn-row warn" onclick="apT(this)"><div class="cn-l"><span class="cn-v vy">KEEP</span></div><div class="cn-m"><b>&#127917; FunnyFaces_DE</b><i>6mo &middot; not monetized &middot; 4.5M / 3mo</i></div><div class="cn-r"><span class="cn-d dn">&#9660; 18%</span><span class="cn-bar"><em class="dn" style="width:26%"></em></span></div><div class="cn-x">Needs a push before the age threshold makes closure the default.</div></div>
+          <div class="cn-row bad" onclick="apT(this)"><div class="cn-l"><span class="cn-v vr">CLOSE</span></div><div class="cn-m"><b>&#128218; StoryTime_IT</b><i>4mo &middot; not monetized &middot; 1.2M / 3mo</i></div><div class="cn-r"><span class="cn-d dn">&#9660; 45%</span><span class="cn-bar"><em class="dn" style="width:12%"></em></span></div><div class="cn-x">Steep decline, low engagement, under &euro;500 across three months. Two independent rules agree &rarr; close.</div></div>
+          <div class="cn-row bad" onclick="apT(this)"><div class="cn-l"><span class="cn-v vr">CLOSE</span></div><div class="cn-m"><b>&#127914; SillyShow_RU</b><i>3mo &middot; not monetized &middot; 0.8M / 3mo</i></div><div class="cn-r"><span class="cn-d dn">&#9660; 52%</span><span class="cn-bar"><em class="dn" style="width:8%"></em></span></div><div class="cn-x">No traction after three months. Closing early frees production capacity instead of spending it on recovery.</div></div>
+        </div></div>
+        <div class="ap-foot">Conditions defined by hand, applied automatically. The sheet decides; a human signs off on CLOSE.</div>
+      </div>
+`,
 
     'posting-tracker': `
-      <div class="demo-header"><div class="sheets-logo">📊</div> Posting Tracker — Daily Channel Status</div>
-      <table class="demo-table">
-        <tr><th>Timestamp</th><th>Channel</th><th>Last Short Date</th><th>Days Since</th><th>Shorts Count</th><th>Status</th><th>Views 7d</th><th>Prev Week</th><th>WoW Change</th></tr>
-        <tr class="highlight-green"><td>2026-04-08</td><td>BB Wow Arabic</td><td>Apr 7</td><td>1</td><td>3</td><td><span class="badge badge-green">OK</span></td><td>33.6M</td><td>9.0M</td><td class="trend-up">+273.8%</td></tr>
-        <tr class="highlight-green"><td>2026-04-08</td><td>Billy Blip Boss EN</td><td>Apr 7</td><td>1</td><td>3</td><td><span class="badge badge-green">OK</span></td><td>241.9M</td><td>214.1M</td><td class="trend-up">+13.0%</td></tr>
-        <tr class="highlight-yellow"><td>2026-04-08</td><td>BippyBop EN</td><td>Apr 7</td><td>1</td><td>2</td><td><span class="badge badge-yellow">LOW VOLUME</span></td><td>99.5M</td><td>60.1M</td><td class="trend-up">+65.6%</td></tr>
-        <tr class="highlight-green"><td>2026-04-08</td><td>SKITS Main</td><td>Apr 7</td><td>1</td><td>3</td><td><span class="badge badge-green">OK</span></td><td>18.2M</td><td>15.8M</td><td class="trend-up">+15.2%</td></tr>
-        <tr class="highlight-green"><td>2026-04-08</td><td>Meowji EN</td><td>Apr 7</td><td>1</td><td>4</td><td><span class="badge badge-green">OK</span></td><td>42.3M</td><td>38.1M</td><td class="trend-up">+11.0%</td></tr>
-        <tr class="highlight-yellow"><td>2026-04-08</td><td>La La Learn FR</td><td>Apr 5</td><td>3</td><td>1</td><td><span class="badge badge-yellow">LATE</span></td><td>5.1M</td><td>5.8M</td><td class="trend-down">-12.1%</td></tr>
-        <tr class="highlight-red"><td>2026-04-08</td><td>Giggle Jiggle DE</td><td>Mar 30</td><td>9</td><td>0</td><td><span class="badge badge-red">MISSED</span></td><td>1.2M</td><td>2.9M</td><td class="trend-down">-58.6%</td></tr>
-      </table>`,
+      <div class="ap ap-blue">
+        <div class="ap-bar"><span class="ap-dots"><i></i><i></i><i></i></span><span class="ap-name">Posting Tracker &mdash; 2026-04-08</span><span class="ap-live"><em></em>AUTO 06:00</span></div>
+        <div class="ap-body"><div class="bd">
+          <div class="bd-col">
+            <div class="bd-head ok">ON SCHEDULE <span>4</span></div>
+            <div class="bd-card" onclick="apT(this)"><b>Billy Blip Boss EN</b><div class="bd-m"><span><i>7d</i>241.9M</span><span class="up"><i>WoW</i>+13.0%</span></div><div class="cn-x">3 shorts, last one yesterday. Previous week 214.1M.</div></div>
+            <div class="bd-card" onclick="apT(this)"><b>BB Wow Arabic</b><div class="bd-m"><span><i>7d</i>33.6M</span><span class="up"><i>WoW</i>+273.8%</span></div><div class="cn-x">3 shorts. Jump from 9.0M &mdash; one video broke out, flagged to Hit-Finder for reuse.</div></div>
+            <div class="bd-card" onclick="apT(this)"><b>Meowji EN</b><div class="bd-m"><span><i>7d</i>42.3M</span><span class="up"><i>WoW</i>+11.0%</span></div><div class="cn-x">4 shorts, highest cadence in the group.</div></div>
+            <div class="bd-card" onclick="apT(this)"><b>SKITS Main</b><div class="bd-m"><span><i>7d</i>18.2M</span><span class="up"><i>WoW</i>+15.2%</span></div><div class="cn-x">3 shorts, on plan.</div></div>
+          </div>
+          <div class="bd-col">
+            <div class="bd-head warn">NEEDS ATTENTION <span>2</span></div>
+            <div class="bd-card warn" onclick="apT(this)"><b>BippyBop EN</b><span class="bd-flag">LOW VOLUME</span><div class="bd-m"><span><i>7d</i>99.5M</span><span class="up"><i>WoW</i>+65.6%</span></div><div class="cn-x">Only 2 shorts against a plan of 3 &mdash; and still up 65%. Under-posting a channel that is working is the expensive kind of mistake.</div></div>
+            <div class="bd-card warn" onclick="apT(this)"><b>La La Learn FR</b><span class="bd-flag">LATE</span><div class="bd-m"><span><i>7d</i>5.1M</span><span class="dn"><i>WoW</i>-12.1%</span></div><div class="cn-x">Three days since last upload, one short this week. The decline tracks the gap.</div></div>
+          </div>
+          <div class="bd-col">
+            <div class="bd-head bad">MISSED <span>1</span></div>
+            <div class="bd-card bad" onclick="apT(this)"><b>Giggle Jiggle DE</b><span class="bd-flag bad">9 DAYS</span><div class="bd-m"><span><i>7d</i>1.2M</span><span class="dn"><i>WoW</i>-58.6%</span></div><div class="cn-x">Zero shorts posted. Nine days dark and views more than halved. This is the alert that used to be found a week later, by accident.</div></div>
+          </div>
+        </div></div>
+        <div class="ap-foot">Pulls upload timestamps for every channel each morning and sorts itself into these three columns.</div>
+      </div>
+`,
 
     'lifecycle': `
-      <div class="demo-header"><div class="sheets-logo">📊</div> Channel Lifecycle Analyzer — Cohort View</div>
-      <table class="demo-table">
-        <tr><th>Channel</th><th>Channels</th><th>Pit Rate</th><th>Revival Rate</th><th>Typical Peak (mo)</th><th>Pit Start</th><th>Pit Duration</th></tr>
-        <tr class="highlight-green"><td>Channel Alpha EN</td><td>24</td><td>35%</td><td>82%</td><td>4-6</td><td>Month 7</td><td>~3 weeks</td></tr>
-        <tr class="highlight-green"><td>Channel Beta PT</td><td>18</td><td>40%</td><td>78%</td><td>3-5</td><td>Month 6</td><td>~4 weeks</td></tr>
-        <tr><td>Channel Gamma ES</td><td>22</td><td>42%</td><td>71%</td><td>4-6</td><td>Month 8</td><td>~3 weeks</td></tr>
-        <tr><td>Channel Delta FR</td><td>12</td><td>50%</td><td>65%</td><td>3-5</td><td>Month 5</td><td>~5 weeks</td></tr>
-        <tr class="highlight-yellow"><td>Channel Epsilon DE</td><td>10</td><td>55%</td><td>58%</td><td>3-4</td><td>Month 4</td><td>~6 weeks</td></tr>
-        <tr class="highlight-yellow"><td>Channel Zeta IT</td><td>8</td><td>60%</td><td>52%</td><td>2-4</td><td>Month 4</td><td>~5 weeks</td></tr>
-        <tr class="highlight-yellow"><td>Channel Eta JA</td><td>6</td><td>48%</td><td>60%</td><td>5-7</td><td>Month 8</td><td>~4 weeks</td></tr>
-        <tr class="highlight-red"><td>Channel Theta TR</td><td>5</td><td>70%</td><td>35%</td><td>2-3</td><td>Month 3</td><td>~8 weeks</td></tr>
-      </table>`,
+      <div class="ap ap-violet">
+        <div class="ap-bar"><span class="ap-dots"><i></i><i></i><i></i></span><span class="ap-name">Channel Lifecycle &mdash; Cohort View</span><span class="ap-live">105 CHANNELS</span></div>
+        <div class="ap-body">
+          <div class="tl-scale"><span>M0</span><span>M3</span><span>M6</span><span>M9</span><span>M12</span></div>
+          <div class="lc">
+            <div class="lc-row" onclick="apT(this)"><div class="lc-n"><b>Alpha EN</b><i>24 ch</i></div><div class="lc-tr"><em class="peak" style="left:33%;width:17%"></em><em class="pit" style="left:58%;width:6%"></em></div><div class="lc-num"><span class="good">82%</span><i>revival</i></div><div class="cn-x">Peaks months 4&ndash;6, pit starts month 7 and lasts about three weeks. Pit rate 35% &mdash; lowest in the portfolio, revival 82% &mdash; highest. This is the shape everything else is compared against.</div></div>
+            <div class="lc-row" onclick="apT(this)"><div class="lc-n"><b>Beta PT</b><i>18 ch</i></div><div class="lc-tr"><em class="peak" style="left:25%;width:17%"></em><em class="pit" style="left:50%;width:8%"></em></div><div class="lc-num"><span class="good">78%</span><i>revival</i></div><div class="cn-x">Peaks 3&ndash;5, pit at month 6 for about four weeks. Pit rate 40%.</div></div>
+            <div class="lc-row" onclick="apT(this)"><div class="lc-n"><b>Gamma ES</b><i>22 ch</i></div><div class="lc-tr"><em class="peak" style="left:33%;width:17%"></em><em class="pit" style="left:67%;width:6%"></em></div><div class="lc-num"><span class="good">71%</span><i>revival</i></div><div class="cn-x">Latest pit onset of the large cohorts &mdash; month 8. Pit rate 42%.</div></div>
+            <div class="lc-row" onclick="apT(this)"><div class="lc-n"><b>Delta FR</b><i>12 ch</i></div><div class="lc-tr"><em class="peak" style="left:25%;width:17%"></em><em class="pit" style="left:42%;width:10%"></em></div><div class="lc-num"><span>65%</span><i>revival</i></div><div class="cn-x">Pit rate 50%, five-week pit. The coin-flip cohort.</div></div>
+            <div class="lc-row warn" onclick="apT(this)"><div class="lc-n"><b>Epsilon DE</b><i>10 ch</i></div><div class="lc-tr"><em class="peak" style="left:25%;width:8%"></em><em class="pit" style="left:33%;width:12%"></em></div><div class="lc-num"><span class="mid">58%</span><i>revival</i></div><div class="cn-x">Short peak, early pit at month 4, six weeks long. Pit rate 55%.</div></div>
+            <div class="lc-row warn" onclick="apT(this)"><div class="lc-n"><b>Zeta IT</b><i>8 ch</i></div><div class="lc-tr"><em class="peak" style="left:17%;width:17%"></em><em class="pit" style="left:33%;width:10%"></em></div><div class="lc-num"><span class="mid">52%</span><i>revival</i></div><div class="cn-x">Pit rate 60%. Peaks as early as month 2.</div></div>
+            <div class="lc-row warn" onclick="apT(this)"><div class="lc-n"><b>Eta JA</b><i>6 ch</i></div><div class="lc-tr"><em class="peak" style="left:42%;width:17%"></em><em class="pit" style="left:67%;width:8%"></em></div><div class="lc-num"><span class="mid">60%</span><i>revival</i></div><div class="cn-x">Slowest to peak at 5&ndash;7 months, but pit rate only 48% &mdash; patience pays in this market.</div></div>
+            <div class="lc-row bad" onclick="apT(this)"><div class="lc-n"><b>Theta TR</b><i>5 ch</i></div><div class="lc-tr"><em class="peak" style="left:17%;width:8%"></em><em class="pit" style="left:25%;width:16%"></em></div><div class="lc-num"><span class="bad">35%</span><i>revival</i></div><div class="cn-x">Pit rate 70%, eight-week pit, revival 35%. Small cohort, so it is treated as a signal to investigate rather than a rule &mdash; five channels is not a law.</div></div>
+          </div>
+          <div class="tl-key"><span><em class="peak"></em>peak window</span><span><em class="pit"></em>pit</span></div>
+        </div>
+        <div class="ap-foot">Teams anticipate the dip instead of reacting to it. Revival tactics deploy before closure gets discussed.</div>
+      </div>
+`,
 
     'greenlight': `
-      <div class="demo-header"><div class="sheets-logo">📊</div> Greenlight Calculator — Project Evaluation</div>
-      <table class="demo-table">
-        <tr><th>Project</th><th>Planned Shorts</th><th>Cost/Short</th><th>Target Margin</th><th>eRPM Blended</th><th>Views Needed</th><th>Expected Views</th><th>Capacity OK?</th><th>Risk Level</th><th>Greenlight?</th></tr>
-        <tr class="highlight-green"><td>🎨 CraftyWorld EN</td><td>120</td><td>$45</td><td>60%</td><td>$2.10</td><td>6.4M</td><td>14.2M</td><td>✅ Yes</td><td><span class="badge badge-green">LOW</span></td><td><span class="badge badge-green">✅ GO</span></td></tr>
-        <tr class="highlight-green"><td>🐾 PetPals PT</td><td>90</td><td>$38</td><td>55%</td><td>$1.85</td><td>4.9M</td><td>9.8M</td><td>✅ Yes</td><td><span class="badge badge-green">LOW</span></td><td><span class="badge badge-green">✅ GO</span></td></tr>
-        <tr class="highlight-yellow"><td>🧪 ScienceKids DE</td><td>60</td><td>$65</td><td>50%</td><td>$3.20</td><td>2.4M</td><td>3.1M</td><td>⚠️ Tight</td><td><span class="badge badge-yellow">MED</span></td><td><span class="badge badge-yellow">⚠️ CONDITIONAL</span></td></tr>
-        <tr class="highlight-red"><td>🎭 DramaClips JA</td><td>45</td><td>$80</td><td>45%</td><td>$1.40</td><td>5.7M</td><td>2.8M</td><td>❌ No</td><td><span class="badge badge-red">HIGH</span></td><td><span class="badge badge-red">❌ NO GO</span></td></tr>
-      </table>`,
+      <div class="ap ap-gold">
+        <div class="ap-bar"><span class="ap-dots"><i></i><i></i><i></i></span><span class="ap-name">Greenlight Calculator &mdash; Project Evaluation</span><span class="ap-live">4 PITCHED</span></div>
+        <div class="ap-body"><div class="gl">
+          <div class="gl-card go" onclick="apT(this)"><div class="gl-top"><b>&#127912; CraftyWorld EN</b><span class="gl-stamp go">GO</span></div><div class="gl-gauge"><em style="width:100%"></em><u style="left:45%"></u></div><div class="gl-leg"><span>break-even 6.4M</span><span class="hit">expected 14.2M</span></div><div class="gl-grid"><span><i>Shorts</i>120</span><span><i>Cost</i>$45</span><span><i>Margin</i>60%</span><span><i>eRPM</i>$2.10</span><span><i>Capacity</i>OK</span><span><i>Risk</i>Low</span></div><div class="cn-x">Expected views sit 2.2&times; above break-even and capacity exists. Nothing to argue about.</div></div>
+          <div class="gl-card go" onclick="apT(this)"><div class="gl-top"><b>&#128062; PetPals PT</b><span class="gl-stamp go">GO</span></div><div class="gl-gauge"><em style="width:100%"></em><u style="left:50%"></u></div><div class="gl-leg"><span>break-even 4.9M</span><span class="hit">expected 9.8M</span></div><div class="gl-grid"><span><i>Shorts</i>90</span><span><i>Cost</i>$38</span><span><i>Margin</i>55%</span><span><i>eRPM</i>$1.85</span><span><i>Capacity</i>OK</span><span><i>Risk</i>Low</span></div><div class="cn-x">Exactly 2&times; break-even, and the cheapest cost per short of the four.</div></div>
+          <div class="gl-card cond" onclick="apT(this)"><div class="gl-top"><b>&#129514; ScienceKids DE</b><span class="gl-stamp cond">CONDITIONAL</span></div><div class="gl-gauge"><em style="width:78%"></em><u style="left:77%"></u></div><div class="gl-leg"><span>break-even 2.4M</span><span class="tight">expected 3.1M</span></div><div class="gl-grid"><span><i>Shorts</i>60</span><span><i>Cost</i>$65</span><span><i>Margin</i>50%</span><span><i>eRPM</i>$3.20</span><span class="warn"><i>Capacity</i>Tight</span><span class="warn"><i>Risk</i>Med</span></div><div class="cn-x">Only 29% headroom over break-even and capacity is tight. Highest eRPM of the set, so it survives &mdash; conditional on freeing production slots first.</div></div>
+          <div class="gl-card no" onclick="apT(this)"><div class="gl-top"><b>&#127917; DramaClips JA</b><span class="gl-stamp no">NO GO</span></div><div class="gl-gauge"><em class="short" style="width:49%"></em><u style="left:100%"></u></div><div class="gl-leg"><span>break-even 5.7M</span><span class="miss">expected 2.8M</span></div><div class="gl-grid"><span><i>Shorts</i>45</span><span><i>Cost</i>$80</span><span><i>Margin</i>45%</span><span><i>eRPM</i>$1.40</span><span class="bad"><i>Capacity</i>No</span><span class="bad"><i>Risk</i>High</span></div><div class="cn-x">Most expensive to make, lowest eRPM, and expected views land at half of break-even. The calculator exists so this conversation takes thirty seconds instead of a meeting.</div></div>
+        </div></div>
+        <div class="ap-foot">Break-even views derived from cost per short, target margin and blended eRPM, then checked against capacity.</div>
+      </div>
+`,
 
     
 
@@ -878,13 +1147,7 @@ function getDemoHTML(demoId) {
         </div>
       </div>
       <div id="gm-comp" class="gm-tab" style="display:none;">
-        <table class="demo-table" style="font-size:11px;">
-          <tr><th>#</th><th>Channel</th><th>Subs</th><th>Title</th><th>Views</th><th>Published</th><th>Duration</th></tr>
-          <tr><td>1</td><td>Firstpost</td><td>9.5M</td><td>Vision 2030 Meets Reality: Saudi Arabia Rethinks</td><td>842K</td><td>2026-01-28</td><td>6:28</td></tr>
-          <tr><td>2</td><td>Adam Something</td><td>1.3M</td><td>Saudi Arabia's NEOM is a Complete Disaster</td><td>434K</td><td>2026-02-26</td><td>14:07</td></tr>
-          <tr><td>3</td><td>Dark Side Of Worlds</td><td>7K</td><td>Real Life in QATAR 2026: The Richest Country</td><td>342K</td><td>2026-02-28</td><td>2:27</td></tr>
-          <tr><td>4</td><td>Musafir TV</td><td>9K</td><td>Travel to Qatar By Musafir TV</td><td>175K</td><td>2026-03-19</td><td>12:16</td></tr>
-        </table>
+        <div class="dv-list"><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">1</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Channel</i><b>Firstpost</b></span><span><i>Subs</i><b>9.5M</b></span><span><i>Views</i><b>842K</b></span></div><div class="dv-more"><div class="dv-f"><i>Published</i><b>2026-01-28</b></div><div class="dv-f"><i>Duration</i><b>6:28</b></div><div class="dv-note"><i>Title</i><p>Vision 2030 Meets Reality: Saudi Arabia Rethinks</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">2</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Channel</i><b>Adam Something</b></span><span><i>Subs</i><b>1.3M</b></span><span><i>Views</i><b>434K</b></span></div><div class="dv-more"><div class="dv-f"><i>Published</i><b>2026-02-26</b></div><div class="dv-f"><i>Duration</i><b>14:07</b></div><div class="dv-note"><i>Title</i><p>Saudi Arabia's NEOM is a Complete Disaster</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">3</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Channel</i><b>Dark Side Of Worlds</b></span><span><i>Subs</i><b>7K</b></span><span><i>Views</i><b>342K</b></span></div><div class="dv-more"><div class="dv-f"><i>Published</i><b>2026-02-28</b></div><div class="dv-f"><i>Duration</i><b>2:27</b></div><div class="dv-note"><i>Title</i><p>Real Life in QATAR 2026: The Richest Country</p></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">4</span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Channel</i><b>Musafir TV</b></span><span><i>Subs</i><b>9K</b></span><span><i>Title</i><b>Travel to Qatar By Musafir TV</b></span></div><div class="dv-more"><div class="dv-f"><i>Views</i><b>175K</b></div><div class="dv-f"><i>Published</i><b>2026-03-19</b></div><div class="dv-f"><i>Duration</i><b>12:16</b></div></div></div></div>
       </div>`,
 
     'distrohub': `
@@ -938,32 +1201,23 @@ function getDemoHTML(demoId) {
 
     'mfk-strategy': `
       <div class="demo-header"><div class="sheets-logo">📊</div> MFK Strategy Engine — Channel Configuration</div>
-      <table class="demo-table">
-        <tr><th>Channel</th><th>Video Type</th><th>Channel Age</th><th>Rebrand?</th><th>Rebrand Type</th><th>Pause Detected?</th><th>Pause Duration</th><th>Recovery Speed</th></tr>
-        <tr class="highlight-green"><td>Channel Alpha</td><td>Animation</td><td>24mo</td><td>Yes</td><td>Longs → Shorts</td><td>No</td><td>—</td><td><span class="badge badge-green">FAST</span></td></tr>
-        <tr class="highlight-green"><td>Channel Beta</td><td>Live-action</td><td>18mo</td><td>No</td><td>—</td><td>No</td><td>—</td><td><span class="badge badge-green">FAST</span></td></tr>
-        <tr><td>Channel Gamma</td><td>Animation</td><td>14mo</td><td>Yes</td><td>Shorts → Longs</td><td>Yes</td><td>2 weeks</td><td><span class="badge badge-blue">NORMAL</span></td></tr>
-        <tr><td>Channel Delta</td><td>Mixed</td><td>10mo</td><td>Yes</td><td>Longs → Longs</td><td>Yes</td><td>3 weeks</td><td><span class="badge badge-blue">NORMAL</span></td></tr>
-        <tr class="highlight-yellow"><td>Channel Epsilon</td><td>Animation</td><td>8mo</td><td>Yes</td><td>Longs → Shorts</td><td>Yes</td><td>4 weeks</td><td><span class="badge badge-yellow">SLOW</span></td></tr>
-        <tr class="highlight-yellow"><td>Channel Zeta</td><td>Live-action</td><td>6mo</td><td>No</td><td>—</td><td>Yes</td><td>5 weeks</td><td><span class="badge badge-yellow">SLOW</span></td></tr>
-        <tr class="highlight-red"><td>Channel Eta</td><td>Mixed</td><td>4mo</td><td>Yes</td><td>Shorts → Longs</td><td>Yes</td><td>6 weeks</td><td><span class="badge badge-red">STALLED</span></td></tr>
-      </table>`,
+      <div class="dv-list"><div class="dv-search"><input class="dv-q" type="text" placeholder="Filter 7 rows..." oninput="dvFilter(this)"></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Channel Alpha</span><span class="dv-chips"><span class="badge badge-green">FAST</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Video Type</i><b>Animation</b></span><span><i>Channel Age</i><b>24mo</b></span><span><i>Rebrand?</i><b>Yes</b></span></div><div class="dv-more"><div class="dv-f"><i>Rebrand Type</i><b>Longs → Shorts</b></div><div class="dv-f"><i>Pause Detected?</i><b>No</b></div><div class="dv-f"><i>Pause Duration</i><b>—</b></div></div></div><div class="dv-card dv-ok" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Channel Beta</span><span class="dv-chips"><span class="badge badge-green">FAST</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Video Type</i><b>Live-action</b></span><span><i>Channel Age</i><b>18mo</b></span><span><i>Rebrand?</i><b>No</b></span></div><div class="dv-more"><div class="dv-f"><i>Rebrand Type</i><b>—</b></div><div class="dv-f"><i>Pause Detected?</i><b>No</b></div><div class="dv-f"><i>Pause Duration</i><b>—</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Channel Gamma</span><span class="dv-chips"><span class="badge badge-blue">NORMAL</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Video Type</i><b>Animation</b></span><span><i>Channel Age</i><b>14mo</b></span><span><i>Rebrand?</i><b>Yes</b></span></div><div class="dv-more"><div class="dv-f"><i>Rebrand Type</i><b>Shorts → Longs</b></div><div class="dv-f"><i>Pause Detected?</i><b>Yes</b></div><div class="dv-f"><i>Pause Duration</i><b>2 weeks</b></div></div></div><div class="dv-card " onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Channel Delta</span><span class="dv-chips"><span class="badge badge-blue">NORMAL</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Video Type</i><b>Mixed</b></span><span><i>Channel Age</i><b>10mo</b></span><span><i>Rebrand?</i><b>Yes</b></span></div><div class="dv-more"><div class="dv-f"><i>Rebrand Type</i><b>Longs → Longs</b></div><div class="dv-f"><i>Pause Detected?</i><b>Yes</b></div><div class="dv-f"><i>Pause Duration</i><b>3 weeks</b></div></div></div><div class="dv-card dv-warn" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Channel Epsilon</span><span class="dv-chips"><span class="badge badge-yellow">SLOW</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Video Type</i><b>Animation</b></span><span><i>Channel Age</i><b>8mo</b></span><span><i>Rebrand?</i><b>Yes</b></span></div><div class="dv-more"><div class="dv-f"><i>Rebrand Type</i><b>Longs → Shorts</b></div><div class="dv-f"><i>Pause Detected?</i><b>Yes</b></div><div class="dv-f"><i>Pause Duration</i><b>4 weeks</b></div></div></div><div class="dv-card dv-warn" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Channel Zeta</span><span class="dv-chips"><span class="badge badge-yellow">SLOW</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Video Type</i><b>Live-action</b></span><span><i>Channel Age</i><b>6mo</b></span><span><i>Rebrand?</i><b>No</b></span></div><div class="dv-more"><div class="dv-f"><i>Rebrand Type</i><b>—</b></div><div class="dv-f"><i>Pause Detected?</i><b>Yes</b></div><div class="dv-f"><i>Pause Duration</i><b>5 weeks</b></div></div></div><div class="dv-card dv-bad" onclick="this.classList.toggle('dv-open')"><div class="dv-top"><span class="dv-mark"></span><span class="dv-title">Channel Eta</span><span class="dv-chips"><span class="badge badge-red">STALLED</span></span><span class="dv-caret">&#8250;</span></div><div class="dv-quick"><span><i>Video Type</i><b>Mixed</b></span><span><i>Channel Age</i><b>4mo</b></span><span><i>Rebrand?</i><b>Yes</b></span></div><div class="dv-more"><div class="dv-f"><i>Rebrand Type</i><b>Shorts → Longs</b></div><div class="dv-f"><i>Pause Detected?</i><b>Yes</b></div><div class="dv-f"><i>Pause Duration</i><b>6 weeks</b></div></div></div></div>`,
 
     'transcript': `
-      <div class="demo-header"><div class="sheets-logo">🔬</div> Video Diagnostics Engine — Per-Video Performance</div>
-      <table class="demo-table" style="font-size:10px;">
-        <tr><th>Video Title</th><th>Published</th><th>Views</th><th>Avg %</th><th>Duration</th><th>Impressions</th><th>CTR</th><th>RPM</th><th>Revenue</th><th>Subs</th><th>🔍 Diagnostic</th></tr>
-        <tr class="highlight-green"><td>Behind Cuba's Beaches: Poverty, Trash, and Slums</td><td>Jul 2025</td><td>68.4K</td><td>27.96%</td><td>0:11:35</td><td>62.5K</td><td>5.57%</td><td>$5.74</td><td>$392</td><td>+327</td><td style="font-size:9px;">💎 HIGH RPM — quality audience<br>⭐ CHANNEL STAR — all metrics above avg</td></tr>
-        <tr class="highlight-green"><td>Gang Wars in the Heart of Europe: Brussels</td><td>Dec 2025</td><td>30.7K</td><td>23.80%</td><td>0:12:05</td><td>31.4K</td><td>5.09%</td><td>$5.37</td><td>$165</td><td>+411</td><td style="font-size:9px;">🔔 Sub conversion 1.34% — highest!<br>💎 HIGH RPM: $5.37</td></tr>
-        <tr class="highlight-green"><td>North Korea Through a Tourist's Lens</td><td>Jul 2025</td><td>28.4K</td><td>30.08%</td><td>0:13:43</td><td>33.1K</td><td>5.22%</td><td>$5.86</td><td>$166</td><td>+121</td><td style="font-size:9px;">💎 HIGH RPM: $5.86</td></tr>
-        <tr><td>India: The Raw Truth Behind the Caste System</td><td>Aug 2025</td><td>50.0K</td><td>23.03%</td><td>0:09:26</td><td>56.6K</td><td>5.77%</td><td>$3.71</td><td>$186</td><td>+392</td><td style="font-size:9px;">🔔 Sub conversion 0.78%<br>💎 HIGH RPM: $3.71</td></tr>
-        <tr><td>Venezuela: The Government That Invented Crypto</td><td>May 2024</td><td>48.4K</td><td>24.21%</td><td>0:19:24</td><td>43.0K</td><td>5.77%</td><td>$1.94</td><td>$94</td><td>+290</td><td style="font-size:9px;">🔔 Sub conversion 0.60%<br>⭐ CHANNEL STAR — CTR 5.8%, Ret 24%</td></tr>
-        <tr class="highlight-yellow"><td>Bangladesh: People Struggling to Survive</td><td>Sep 2023</td><td>5.9M</td><td>12.96%</td><td>0:12:45</td><td>18.6M</td><td>5.49%</td><td>$0.04</td><td>$6,897</td><td>+23.3K</td><td style="font-size:9px;">✂️ CTR 5.9% (top!) but Ret 13% (low)<br>💰 LOW RPM: $0.04 — cheap geos</td></tr>
-        <tr class="highlight-yellow"><td>Remote Russia: How People Live in Isolated Villages</td><td>Dec 2022</td><td>1.9M</td><td>18.05%</td><td>0:05:48</td><td>3.4M</td><td>5.58%</td><td>$0.14</td><td>$2,634</td><td>+17.1K</td><td style="font-size:9px;">✂️ CTR top but Ret 18%<br>🔔 Sub conversion 0.63%</td></tr>
-        <tr class="highlight-yellow"><td>Shocking Bangkok: Thailand's Capital!</td><td>Jan 2024</td><td>84.9K</td><td>17.38%</td><td>0:14:02</td><td>92.0K</td><td>5.55%</td><td>—</td><td>$965</td><td>+2.8K</td><td style="font-size:9px;">✂️ CTR top but Ret 17%<br>🔔 Sub conversion 0.67%</td></tr>
-        <tr class="highlight-yellow"><td>Singapore: Luxury without Freedom</td><td>Nov 2023</td><td>28.8K</td><td>18.40%</td><td>0:12:35</td><td>34.9K</td><td>5.62%</td><td>$0.17</td><td>$5</td><td>+145</td><td style="font-size:9px;">✂️ CTR top but Ret 18%<br>💰 LOW RPM — cheap geos</td></tr>
-        <tr><td>Turkmenistan: Country of Prohibitions</td><td>Dec 2023</td><td>44.4K</td><td>32.09%</td><td>0:06:11</td><td>50.4K</td><td>5.93%</td><td>—</td><td>$8</td><td>+293</td><td style="font-size:9px;">🔔 Sub conversion 0.66%<br>⭐ CHANNEL STAR — CTR 5.9%, Ret 32%</td></tr>
-      </table>`,
+      <div class="ap ap-cyan">
+        <div class="ap-bar"><span class="ap-dots"><i></i><i></i><i></i></span><span class="ap-name">Video Diagnostics &mdash; Per-Video Performance</span><span class="ap-live">10 SHOWN</span></div>
+        <div class="ap-kpis">
+          <div class="ap-kpi ok"><b>3</b><span>channel stars</span></div>
+          <div class="ap-kpi warn"><b>4</b><span>need re-edit</span></div>
+          <div class="ap-kpi"><b>5</b><span>high RPM</span></div>
+          <div class="ap-kpi"><b>auto</b><span>no Studio needed</span></div>
+        </div>
+        <div class="ap-body"><div class="dg">
+<div class="dg-row " onclick="apT(this)"><div class="dg-t"><b>Behind Cuba's Beaches: Poverty, Trash, and Slums</b><i>Jul 2025 &middot; 11:35 &middot; 68.4K views</i></div><div class="dg-f"><span class="fl gem">HIGH RPM</span><span class="fl star">CHANNEL STAR</span></div><div class="dg-b"><span><i>Retention 27.96%</i><em style="width:70%" class="up"></em></span><span><i>CTR 5.57%</i><em style="width:74%" class="up"></em></span></div><div class="cn-x">RPM $5.74 &middot; revenue $392 &middot; +327 subs &middot; 62.5K impressions. Every metric above channel average &mdash; that is the rule for CHANNEL STAR.</div></div><div class="dg-row " onclick="apT(this)"><div class="dg-t"><b>Gang Wars in the Heart of Europe: Brussels</b><i>Dec 2025 &middot; 12:05 &middot; 30.7K views</i></div><div class="dg-f"><span class="fl bell">SUB CONV 1.34% &mdash; HIGHEST</span><span class="fl gem">HIGH RPM</span></div><div class="dg-b"><span><i>Retention 23.80%</i><em style="width:60%" class="up"></em></span><span><i>CTR 5.09%</i><em style="width:68%" class="up"></em></span></div><div class="cn-x">RPM $5.37 &middot; revenue $165 &middot; +411 subs from 30.7K views. Fewer views than Cuba, more subscribers &mdash; this is the video to copy for audience building.</div></div><div class="dg-row " onclick="apT(this)"><div class="dg-t"><b>North Korea Through a Tourist's Lens</b><i>Jul 2025 &middot; 13:43 &middot; 28.4K views</i></div><div class="dg-f"><span class="fl gem">HIGH RPM $5.86</span></div><div class="dg-b"><span><i>Retention 30.08%</i><em style="width:75%" class="up"></em></span><span><i>CTR 5.22%</i><em style="width:70%" class="up"></em></span></div><div class="cn-x">Best retention in the set. Revenue $166 &middot; +121 subs &middot; 33.1K impressions.</div></div><div class="dg-row " onclick="apT(this)"><div class="dg-t"><b>India: The Raw Truth Behind the Caste System</b><i>Aug 2025 &middot; 09:26 &middot; 50.0K views</i></div><div class="dg-f"><span class="fl bell">SUB CONV 0.78%</span><span class="fl gem">RPM $3.71</span></div><div class="dg-b"><span><i>Retention 23.03%</i><em style="width:58%" class="up"></em></span><span><i>CTR 5.77%</i><em style="width:78%" class="up"></em></span></div><div class="cn-x">Revenue $186 &middot; +392 subs &middot; 56.6K impressions.</div></div><div class="dg-row " onclick="apT(this)"><div class="dg-t"><b>Venezuela: The Government That Invented Crypto</b><i>May 2024 &middot; 19:24 &middot; 48.4K views</i></div><div class="dg-f"><span class="fl star">CHANNEL STAR</span><span class="fl bell">SUB CONV 0.60%</span></div><div class="dg-b"><span><i>Retention 24.21%</i><em style="width:61%" class="up"></em></span><span><i>CTR 5.77%</i><em style="width:78%" class="up"></em></span></div><div class="cn-x">RPM $1.94 &middot; revenue $94 &middot; +290 subs. Longest video here at nineteen minutes and retention still holds.</div></div><div class="dg-row warn" onclick="apT(this)"><div class="dg-t"><b>Bangladesh: People Struggling to Survive</b><i>Sep 2023 &middot; 12:45 &middot; 5.9M views</i></div><div class="dg-f"><span class="fl cut">RE-EDIT INTRO</span><span class="fl low">LOW RPM $0.04</span></div><div class="dg-b"><span><i>Retention 12.96%</i><em style="width:32%" class="dn"></em></span><span><i>CTR 5.49%</i><em style="width:74%" class="up"></em></span></div><div class="cn-x">Best CTR in the set, worst retention. 18.6M impressions, $6,897 revenue at $0.04 RPM &mdash; cheap geos. The thumbnail is doing all the work and the first thirty seconds lose the audience it wins.</div></div><div class="dg-row warn" onclick="apT(this)"><div class="dg-t"><b>Remote Russia: How People Live in Isolated Villages</b><i>Dec 2022 &middot; 05:48 &middot; 1.9M views</i></div><div class="dg-f"><span class="fl cut">RE-EDIT INTRO</span><span class="fl bell">SUB CONV 0.63%</span></div><div class="dg-b"><span><i>Retention 18.05%</i><em style="width:45%" class="dn"></em></span><span><i>CTR 5.58%</i><em style="width:75%" class="up"></em></span></div><div class="cn-x">3.4M impressions &middot; $2,634 revenue at $0.14 RPM &middot; +17.1K subs.</div></div><div class="dg-row warn" onclick="apT(this)"><div class="dg-t"><b>Shocking Bangkok: Thailand's Capital!</b><i>Jan 2024 &middot; 14:02 &middot; 84.9K views</i></div><div class="dg-f"><span class="fl cut">RE-EDIT INTRO</span></div><div class="dg-b"><span><i>Retention 17.38%</i><em style="width:43%" class="dn"></em></span><span><i>CTR 5.55%</i><em style="width:75%" class="up"></em></span></div><div class="cn-x">92.0K impressions &middot; $965 revenue &middot; +2.8K subs &middot; sub conversion 0.67%.</div></div><div class="dg-row warn" onclick="apT(this)"><div class="dg-t"><b>Singapore: Luxury without Freedom</b><i>Nov 2023 &middot; 12:35 &middot; 28.8K views</i></div><div class="dg-f"><span class="fl cut">RE-EDIT INTRO</span><span class="fl low">LOW RPM</span></div><div class="dg-b"><span><i>Retention 18.40%</i><em style="width:46%" class="dn"></em></span><span><i>CTR 5.62%</i><em style="width:76%" class="up"></em></span></div><div class="cn-x">34.9K impressions &middot; $5 revenue at $0.17 RPM &middot; +145 subs.</div></div><div class="dg-row " onclick="apT(this)"><div class="dg-t"><b>Turkmenistan: Country of Prohibitions</b><i>Dec 2023 &middot; 06:11 &middot; 44.4K views</i></div><div class="dg-f"><span class="fl star">CHANNEL STAR</span><span class="fl bell">SUB CONV 0.66%</span></div><div class="dg-b"><span><i>Retention 32.09%</i><em style="width:80%" class="up"></em></span><span><i>CTR 5.93%</i><em style="width:80%" class="up"></em></span></div><div class="cn-x">Highest retention and highest CTR in the set. 50.4K impressions &middot; +293 subs.</div></div>
+        </div></div>
+        <div class="ap-foot">Studio export in, diagnostic notes out. Rules combine CTR, retention, RPM and sub conversion &mdash; nobody opens YouTube Studio to find this.</div>
+      </div>
+`,
     'cs-lalalearn': `
       <div style="padding:20px;background:white;color:#333;">
         <div style="text-align:center;margin-bottom:20px;">
@@ -1058,14 +1312,23 @@ function getDemoHTML(demoId) {
       </div>`,
 
     'realtime-dash': `
-      <div class="demo-header"><div class="sheets-logo">📺</div> Real-time Dashboard — All Channels in One Sheet</div>
-      <table class="demo-table" style="font-size:11px;">
-        <tr><th>Title</th><th>Date</th><th>Views</th><th>+Day</th><th>+Week%</th><th>Likes</th><th>Comments</th><th>ER%</th><th>Type</th><th>Tags (short)</th></tr>
-        <tr><td>The $220 Billion World Cup Ghost Town</td><td>Apr 2</td><td>3,451</td><td>+133</td><td><span style="color:#34a853">NEW</span></td><td>158</td><td>25</td><td>5.30%</td><td>LONG</td><td>travel, qatar, megaprojects</td></tr>
-        <tr><td>Venezuela Is Collapsing and Nobody's Stopping It</td><td>Mar 29</td><td>12,713</td><td>+471</td><td class="trend-up">+6.60%</td><td>388</td><td>42</td><td>3.38%</td><td>LONG</td><td>travel, venezuela, documentary</td></tr>
-        <tr><td>Inside North Korea in 2026</td><td>Mar 27</td><td>20,233</td><td>+457</td><td class="trend-up">+27.30%</td><td>289</td><td>53</td><td>1.69%</td><td>LONG</td><td>travel, north korea, documentary</td></tr>
-        <tr><td>Why People Still Live in Earth's Harshest Zones</td><td>Mar 19</td><td>2,726</td><td>+15</td><td class="trend-up">+5.90%</td><td>107</td><td>6</td><td>4.15%</td><td>LONG</td><td>travel, survival, Mongolia, Peru</td></tr>
-      </table>`
+      <div class="ap ap-red">
+        <div class="ap-bar"><span class="ap-dots"><i></i><i></i><i></i></span><span class="ap-name">Real-time Dashboard &mdash; All Channels</span><span class="ap-live"><em></em>LIVE</span></div>
+        <div class="ap-kpis">
+          <div class="ap-kpi"><b>39,123</b><span>views tracked</span></div>
+          <div class="ap-kpi ok"><b>+1,076</b><span>today</span></div>
+          <div class="ap-kpi"><b>3.63%</b><span>avg ER</span></div>
+          <div class="ap-kpi"><b>4</b><span>live videos</span></div>
+        </div>
+        <div class="ap-body"><div class="rt">
+          <div class="rt-row" onclick="apT(this)"><div class="rt-l"><span class="rt-new">NEW</span></div><div class="rt-m"><b>The $220 Billion World Cup Ghost Town</b><i>Apr 2 &middot; LONG &middot; travel, qatar, megaprojects</i></div><div class="rt-r"><b>3,451</b><span class="up">+133 today</span></div><div class="cn-x">158 likes &middot; 25 comments &middot; ER 5.30% &mdash; highest engagement rate on the channel right now, and it is the newest video. Worth watching for a breakout.</div></div>
+          <div class="rt-row" onclick="apT(this)"><div class="rt-l"><span class="rt-p up">+6.6%</span></div><div class="rt-m"><b>Venezuela Is Collapsing and Nobody's Stopping It</b><i>Mar 29 &middot; LONG &middot; travel, venezuela, documentary</i></div><div class="rt-r"><b>12,713</b><span class="up">+471 today</span></div><div class="cn-x">388 likes &middot; 42 comments &middot; ER 3.38%. Strongest daily gain in the set.</div></div>
+          <div class="rt-row" onclick="apT(this)"><div class="rt-l"><span class="rt-p up">+27.3%</span></div><div class="rt-m"><b>Inside North Korea in 2026</b><i>Mar 27 &middot; LONG &middot; travel, north korea, documentary</i></div><div class="rt-r"><b>20,233</b><span class="up">+457 today</span></div><div class="cn-x">289 likes &middot; 53 comments &middot; ER 1.69%. Biggest week-over-week jump &mdash; still accelerating two weeks after publication, which is unusual and worth a community post.</div></div>
+          <div class="rt-row" onclick="apT(this)"><div class="rt-l"><span class="rt-p up">+5.9%</span></div><div class="rt-m"><b>Why People Still Live in Earth's Harshest Zones</b><i>Mar 19 &middot; LONG &middot; travel, survival, Mongolia, Peru</i></div><div class="rt-r"><b>2,726</b><span class="flat">+15 today</span></div><div class="cn-x">107 likes &middot; 6 comments &middot; ER 4.15%. Daily growth has flattened &mdash; a packaging candidate for a retitle test.</div></div>
+        </div></div>
+        <div class="ap-foot">One sheet, every channel, refreshed automatically. Thumbnails, growth, engagement and metadata in a single view.</div>
+      </div>
+`
   };
   return demos[demoId] || '<div style="padding:40px;text-align:center;color:#333;background:white;">Demo loading...</div>';
 }
@@ -1097,6 +1360,68 @@ const nonMfkChannels = [
 ];
 
 const thumbCovers = {
+  'trust-engine': { bg: 'cover-indigo', html: `<div class="thumb-cover">
+    <svg width="100%" height="100%" viewBox="0 0 320 180" style="opacity:0.18;">
+      <line x1="30" y1="150" x2="290" y2="150" stroke="#818cf8" stroke-width="0.8"/>
+      <rect x="46" y="96" width="16" height="54" fill="#818cf8" opacity="0.55"/>
+      <line x1="54" y1="62" x2="54" y2="120" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="47" y1="62" x2="61" y2="62" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="47" y1="120" x2="61" y2="120" stroke="#818cf8" stroke-width="1.4"/>
+      <rect x="96" y="70" width="16" height="80" fill="#818cf8" opacity="0.55"/>
+      <line x1="104" y1="24" x2="104" y2="112" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="97" y1="24" x2="111" y2="24" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="97" y1="112" x2="111" y2="112" stroke="#818cf8" stroke-width="1.4"/>
+      <rect x="196" y="112" width="16" height="38" fill="#818cf8" opacity="0.55"/>
+      <line x1="204" y1="80" x2="204" y2="140" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="197" y1="80" x2="211" y2="80" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="197" y1="140" x2="211" y2="140" stroke="#818cf8" stroke-width="1.4"/>
+      <rect x="246" y="84" width="16" height="66" fill="#818cf8" opacity="0.55"/>
+      <line x1="254" y1="34" x2="254" y2="128" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="247" y1="34" x2="261" y2="34" stroke="#818cf8" stroke-width="1.4"/>
+      <line x1="247" y1="128" x2="261" y2="128" stroke="#818cf8" stroke-width="1.4"/>
+    </svg>
+    <div class="cover-glow" style="width:130px;height:130px;background:#2c2a7a;top:6%;left:8%;"></div>
+    <div class="thumb-cover-main" style="font-size:19px;">HALF YOUR<br>&ldquo;PROVEN&rdquo; WINS<br><span style="color:#818cf8;">ARE VIBES</span></div>
+    <div class="thumb-cover-sub" style="color:rgba(129,140,248,0.65);">n=3 is not a finding babe</div>
+  </div>` },
+  'policy-qa': { bg: 'cover-green', html: `<div class="thumb-cover">
+    <svg width="100%" height="100%" viewBox="0 0 320 180" style="opacity:0.16;">
+      <rect x="34" y="30" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="76" y="30" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="118" y="30" width="34" height="22" rx="2" fill="#f87171" opacity="0.5"/>
+      <rect x="160" y="30" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="202" y="30" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="244" y="30" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="34" y="128" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="76" y="128" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="118" y="128" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="160" y="128" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+      <rect x="202" y="128" width="34" height="22" rx="2" fill="#fbbf24" opacity="0.45"/>
+      <rect x="244" y="128" width="34" height="22" rx="2" fill="none" stroke="#4ade80" stroke-width="1"/>
+    </svg>
+    <div class="cover-glow" style="width:120px;height:120px;background:#0f5c2a;bottom:4%;right:8%;"></div>
+    <div class="thumb-cover-main" style="font-size:18px;">IT WATCHED<br>EVERY VIDEO<br><span style="color:#4ade80;">SO YOU DIDN'T</span></div>
+    <div class="thumb-cover-sub" style="color:rgba(74,222,128,0.62);">unpaid. unblinking. undefeated.</div>
+  </div>` },
+  'archetypes': { bg: 'cover-rose', html: `<div class="thumb-cover">
+    <svg width="100%" height="100%" viewBox="0 0 320 180" style="opacity:0.2;">
+      <g stroke="#f0abfc" stroke-width="0.6" opacity="0.7">
+        <line x1="62" y1="52" x2="84" y2="40"/><line x1="62" y1="52" x2="80" y2="72"/><line x1="84" y1="40" x2="80" y2="72"/>
+        <line x1="176" y1="46" x2="200" y2="60"/><line x1="176" y1="46" x2="192" y2="30"/><line x1="200" y1="60" x2="192" y2="30"/>
+        <line x1="112" y1="132" x2="136" y2="142"/><line x1="112" y1="132" x2="130" y2="116"/><line x1="136" y1="142" x2="130" y2="116"/>
+        <line x1="238" y1="120" x2="262" y2="132"/><line x1="238" y1="120" x2="256" y2="104"/>
+      </g>
+      <g fill="#f0abfc">
+        <circle cx="62" cy="52" r="4.5"/><circle cx="84" cy="40" r="6"/><circle cx="80" cy="72" r="4"/>
+        <circle cx="176" cy="46" r="5"/><circle cx="200" cy="60" r="4"/><circle cx="192" cy="30" r="3.5"/>
+        <circle cx="112" cy="132" r="4"/><circle cx="136" cy="142" r="5.5"/><circle cx="130" cy="116" r="3.5"/>
+        <circle cx="238" cy="120" r="4"/><circle cx="262" cy="132" r="3"/><circle cx="256" cy="104" r="4.5"/>
+      </g>
+    </svg>
+    <div class="cover-glow" style="width:135px;height:135px;background:#5c1a4a;top:8%;right:6%;"></div>
+    <div class="thumb-cover-main" style="font-size:19px;">17 REASONS<br>TODDLERS<br><span style="color:#f0abfc;">HIT REPLAY</span></div>
+    <div class="thumb-cover-sub" style="color:rgba(240,171,252,0.62);">jung would've been obsessed</div>
+  </div>` },
   'hit-finder': {
     bg: 'cover-navy',
     html: `<div class="thumb-cover">
@@ -1311,9 +1636,10 @@ function openVideo(id) {
   // Description
   document.getElementById('descPreview').innerHTML = `
     <span class="bold">${p.views}</span> &bull; ${p.date}<br>
-    ${p.problem.substring(0, 120)}...
+    ${p.plain || (p.problem.substring(0, 120) + '...')}
   `;
   document.getElementById('descFull').innerHTML = `
+    ${p.plain ? `<div class="plain-box"><span class="plain-tag">In plain words</span><p>${p.plain}</p></div>` : ''}
     <div class="desc-section">
       <div class="desc-section-title">🔴 Problem</div>
       <p>${p.problem}</p>
@@ -2641,6 +2967,24 @@ body {
 
 // ---------- CELEBRITY COMMENTS ----------
 const celebComments = {
+  'trust-engine': [
+    {name:'Karl Popper', color:'#8e7cc3', initials:'KP', text:"Someone finally built falsifiability into a dashboard. I waited 90 years for this.", likes:'1902'},
+    {name:'The Jira Card', color:'#0052cc', initials:'JC', text:"I said CONFIRMED for 14 months and she scored me blind anyway. no respect. correct, but no respect", likes:'350K'},
+    {name:'Peer Review', color:'#7f8c8d', initials:'PR', text:"n=3 is not a finding, it is a feeling. finally a machine that says it out loud", likes:'88K'},
+    {name:'Claude (Anthropic)', color:'#d4a574', initials:'🤖', text:"She caught me being generous about my own confidence and put a cap on it in code. Humbling. Correct. I've grown.", likes:'∞'},
+  ],
+  'policy-qa': [
+    {name:'The Algorithm', color:'#f00', initials:'AL', text:"i was going to demonetize 40 videos next tuesday. she got there first. we are not on speaking terms", likes:'620K'},
+    {name:'Big Bird', color:'#f1c40f', initials:'BB', text:"it checked for scary frames so the kids don't have to be brave. that's the whole job actually", likes:'2.1M'},
+    {name:'Compliance Officer', color:'#34495e', initials:'CO', text:"Two separate rubrics instead of one with exceptions. I have been asking for this since 2019.", likes:'12K'},
+    {name:'Dr. House', color:'#2980b9', initials:'DH', text:"It's not the content. It's the frame at 0:11. Everybody lies, including thumbnails.", likes:'404K'},
+  ],
+  'archetypes': [
+    {name:'Carl Jung', color:'#9b59b6', initials:'CJ', text:"I described archetypes for the human psyche. She found seventeen of them in toddler shorts and ranked them by lift. Science marches on.", likes:'1875'},
+    {name:'A Very Confident Trend', color:'#e67e22', initials:'TR', text:"i was +11% until she checked which of me was just borrowed characters. this is bullying (accurate)", likes:'96K'},
+    {name:'Production Team', color:'#27ae60', initials:'PT', text:"finally a dashboard that tells us what to SHOOT and not just what already happened. we cried a little", likes:'71K'},
+    {name:'Google Sheets', color:'#34a853', initials:'GS', text:"3,012 rows of frame descriptions. I have never felt so alive and so close to death.", likes:'333K'},
+  ],
   'hit-finder': [
     {name:'MrBeast', color:'#f00', initials:'MB', text:"I'll give $10,000 to anyone who hires this person rn no cap", likes:'847K'},
     {name:'Gordon Ramsay', color:'#e67e22', initials:'GR', text:"This system is RAW. And I mean that as a compliment. Finally someone who actually ate and left no crumbs. Michelin star for this spreadsheet.", likes:'234K'},
@@ -3144,5 +3488,548 @@ if (!document.getElementById('blinkStyle')) {
 // Cards already rendered by main DOMContentLoaded handler
 // Removed duplicate renderCards call that caused thumbnail flickering
 </script>
+
+<style>
+/* ===== INTERACTIVE VIEW (iv-*) : replaces flat tables with tappable rows ===== */
+.iv-wrap{padding:12px 14px 16px;font-family:'Roboto',-apple-system,sans-serif;color:#e8e8e8;}
+.iv-strip{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.iv-kpi{flex:1 1 90px;background:#0d0d0d;border:1px solid rgba(201,169,110,.16);border-radius:3px;padding:9px 11px;}
+.iv-kpi b{display:block;font-size:19px;font-weight:700;line-height:1.1;color:#f0e6d2;}
+.iv-kpi span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#8d8d8d;}
+.iv-kpi b.iv-g{color:#4ade80}.iv-kpi b.iv-a{color:#fbbf24}.iv-kpi b.iv-r{color:#f87171}
+.iv-hint{font-size:11.5px;color:#9a9a9a;margin:0 0 9px;font-style:italic;}
+.iv-rows{display:flex;flex-direction:column;gap:5px;}
+.iv-row{background:#0d0d0d;border:1px solid rgba(255,255,255,.07);border-radius:3px;overflow:hidden;transition:border-color .16s;}
+.iv-row:hover{border-color:rgba(201,169,110,.4);}
+.iv-row.is-open{border-color:rgba(201,169,110,.75);}
+.iv-head{display:flex;align-items:center;gap:9px;padding:10px 11px;cursor:pointer;}
+.iv-dot{width:7px;height:7px;border-radius:50%;flex:none;}
+.iv-bg{background:#4ade80}.iv-ba{background:#fbbf24}.iv-br{background:#f87171}
+.iv-name{flex:1;font-size:12.5px;font-weight:500;color:#ededed;line-height:1.35;}
+.iv-axes{font-size:10px;letter-spacing:.05em;color:#7d7d7d;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.iv-badge{font-size:9.5px;font-weight:700;letter-spacing:.07em;padding:3px 7px;border-radius:2px;white-space:nowrap;}
+.iv-bag{background:rgba(74,222,128,.14);color:#4ade80;}
+.iv-baa{background:rgba(251,191,36,.14);color:#fbbf24;}
+.iv-bar{background:rgba(248,113,113,.14);color:#f87171;}
+.iv-body{display:none;padding:2px 12px 13px 27px;border-top:1px solid rgba(255,255,255,.05);}
+.iv-row.is-open .iv-body{display:block;}
+.iv-body p{margin:9px 0 0;font-size:12px;line-height:1.6;color:#b8b8b8;}
+.iv-body b{color:#e6d9bd;font-weight:600;}
+.iv-tabs{display:flex;gap:5px;margin-bottom:9px;}
+.iv-tab{font-size:11px;letter-spacing:.04em;padding:6px 13px;border-radius:2px;cursor:pointer;background:#1a1a1a;color:#9a9a9a;border:1px solid rgba(255,255,255,.08);font-family:inherit;}
+.iv-tab.is-on{background:#c9a96e;color:#0d0d0d;border-color:#c9a96e;font-weight:600;}
+.iv-pane{display:none}.iv-pane.is-on{display:block}
+.iv-foot{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.06);}
+.iv-tag{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#a89464;border:1px solid rgba(201,169,110,.28);border-radius:999px;padding:4px 9px;}
+
+/* ===== legacy demo tables upgraded to tappable cards ===== */
+.demo-table tbody tr.tbl-row{cursor:pointer;transition:background .15s;}
+.demo-table tbody tr.tbl-row:hover{background:rgba(201,169,110,.07)!important;}
+.demo-table tbody tr.tbl-row.is-lit{background:rgba(201,169,110,.13)!important;}
+@media (max-width:760px){
+  .demo-table thead{display:none;}
+  .demo-table,.demo-table tbody,.demo-table tr,.demo-table td{display:block;width:100%!important;}
+  .demo-table tr{margin-bottom:6px;background:#0d0d0d;border:1px solid rgba(255,255,255,.08);border-radius:3px;padding:4px 2px;}
+  .demo-table td{display:flex!important;justify-content:space-between;gap:12px;border:0!important;padding:5px 10px!important;font-size:11.5px!important;text-align:right!important;}
+  .demo-table td::before{content:attr(data-lbl);flex:none;max-width:45%;text-align:left;color:#8d8d8d;font-size:10px;letter-spacing:.05em;text-transform:uppercase;}
+  .demo-table td:first-child{font-weight:600;color:#f0e6d2;}
+}
+</style>
+<script>
+/* interactive rows + tabs, and mobile-readable upgrade for the old tables */
+(function(){
+  document.addEventListener('click', function(e){
+    var head = e.target.closest('.iv-head');
+    if(head){ head.parentElement.classList.toggle('is-open'); return; }
+    var tab = e.target.closest('.iv-tab');
+    if(tab){
+      var wrap = tab.closest('.iv-wrap');
+      wrap.querySelectorAll('.iv-tab').forEach(function(t){ t.classList.remove('is-on'); });
+      wrap.querySelectorAll('.iv-pane').forEach(function(p){ p.classList.remove('is-on'); });
+      tab.classList.add('is-on');
+      var pane = wrap.querySelector('#'+tab.dataset.ivtab);
+      if(pane) pane.classList.add('is-on');
+      return;
+    }
+    var row = e.target.closest('.demo-table tr.tbl-row');
+    if(row){ row.classList.toggle('is-lit'); }
+  });
+
+  function upgradeTables(scope){
+    (scope||document).querySelectorAll('.demo-table').forEach(function(tbl){
+      if(tbl.dataset.upgraded) return;
+      tbl.dataset.upgraded = '1';
+      var heads = [].map.call(tbl.querySelectorAll('thead th'), function(th){
+        return th.textContent.trim();
+      });
+      [].forEach.call(tbl.querySelectorAll('tbody tr'), function(tr){
+        tr.classList.add('tbl-row');
+        [].forEach.call(tr.children, function(td, i){
+          if(!td.getAttribute('data-lbl') && heads[i]) td.setAttribute('data-lbl', heads[i]);
+        });
+      });
+    });
+  }
+
+  var player = document.getElementById('playerContainer');
+  if(player){
+    new MutationObserver(function(){ upgradeTables(player); })
+      .observe(player, {childList:true, subtree:true});
+  }
+  document.addEventListener('DOMContentLoaded', function(){ upgradeTables(document); });
+  upgradeTables(document);
+})();
+</script>
+
+<style>
+/* ===== dv-* : demo data rendered as an interface, not a table ===== */
+.dv-list{display:flex;flex-direction:column;gap:5px;padding:10px 12px 14px;
+  font-family:'Roboto',-apple-system,sans-serif;}
+.dv-search{margin-bottom:3px;}
+.dv-q{width:100%;background:#0d0d0d;border:1px solid rgba(255,255,255,.09);border-radius:3px;
+  color:#e8e8e8;font:inherit;font-size:12px;padding:8px 11px;outline:none;}
+.dv-q:focus{border-color:rgba(201,169,110,.55);}
+.dv-q::placeholder{color:#6f6f6f;}
+
+.dv-card{position:relative;background:#0d0d0d;border:1px solid rgba(255,255,255,.07);
+  border-left:2px solid rgba(255,255,255,.14);border-radius:3px;padding:9px 11px;
+  cursor:pointer;transition:border-color .16s,background .16s;}
+.dv-card:hover{background:#111;border-color:rgba(201,169,110,.34);}
+.dv-card.dv-ok{border-left-color:#4ade80;}
+.dv-card.dv-warn{border-left-color:#fbbf24;}
+.dv-card.dv-bad{border-left-color:#f87171;}
+
+.dv-top{display:flex;align-items:center;gap:8px;}
+.dv-mark{display:none;}
+.dv-title{flex:1;font-size:12.5px;font-weight:500;color:#efefef;line-height:1.35;
+  min-width:0;overflow-wrap:anywhere;}
+.dv-chips{display:flex;gap:4px;flex:none;}
+.dv-caret{flex:none;color:#6a6a6a;font-size:15px;line-height:1;transition:transform .18s;}
+.dv-card.dv-open .dv-caret{transform:rotate(90deg);color:#c9a96e;}
+
+.dv-quick{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.dv-quick span{flex:1 1 78px;background:rgba(255,255,255,.035);border-radius:2px;padding:5px 8px;}
+.dv-quick i{display:block;font-style:normal;font-size:9px;letter-spacing:.06em;
+  text-transform:uppercase;color:#858585;margin-bottom:2px;}
+.dv-quick b{font-size:12.5px;font-weight:600;color:#f0e6d2;font-variant-numeric:tabular-nums;}
+
+.dv-more{display:none;margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.06);
+  grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:7px;}
+.dv-card.dv-open .dv-more{display:grid;}
+.dv-f i{display:block;font-style:normal;font-size:9px;letter-spacing:.06em;
+  text-transform:uppercase;color:#858585;margin-bottom:2px;}
+.dv-f b{font-size:12px;font-weight:500;color:#dcdcdc;font-variant-numeric:tabular-nums;}
+.dv-note{grid-column:1/-1;}
+.dv-note i{display:block;font-style:normal;font-size:9px;letter-spacing:.06em;
+  text-transform:uppercase;color:#858585;margin-bottom:3px;}
+.dv-note p{margin:0;font-size:11.5px;line-height:1.55;color:#b6b6b6;}
+
+.dv-card .badge{font-size:9px!important;padding:3px 7px!important;}
+.dv-hide{display:none!important;}
+@media (max-width:520px){
+  .dv-quick span{flex:1 1 46%;}
+}
+</style>
+<script>
+/* restore up/down colouring on numeric values */
+(function(){
+  function tint(root){
+    (root||document).querySelectorAll('.dv-quick b, .dv-f b').forEach(function(b){
+      if(b.dataset.tinted) return;
+      b.dataset.tinted='1';
+      var t=b.textContent.trim();
+      if(/^[\u25B2]/.test(t) || /^\+/.test(t) || /NEW/i.test(t)) b.style.color='#4ade80';
+      else if(/^[\u25BC]/.test(t) || /^-\d/.test(t)) b.style.color='#f87171';
+      else if(/^\u2192/.test(t)) b.style.color='#fbbf24';
+    });
+  }
+  var pc=document.getElementById('playerContainer');
+  if(pc) new MutationObserver(function(){ tint(pc); }).observe(pc,{childList:true,subtree:true});
+  document.addEventListener('DOMContentLoaded', function(){ tint(document); });
+  tint(document);
+})();
+
+function dvFilter(inp){
+  var q = inp.value.toLowerCase().trim();
+  var list = inp.closest('.dv-list');
+  list.querySelectorAll('.dv-card').forEach(function(c){
+    c.classList.toggle('dv-hide', q !== '' && c.textContent.toLowerCase().indexOf(q) === -1);
+  });
+}
+</script>
+
+<style>
+/* ================= ap-* : each demo gets real app chrome ================= */
+.ap{--acc:#c9a96e;background:#0a0a0a;font-family:'Roboto',-apple-system,sans-serif;
+  color:#e9e9e9;min-height:100%;}
+.ap-mint{--acc:#34d399}.ap-blue{--acc:#60a5fa}.ap-gold{--acc:#e0b457}
+.ap-violet{--acc:#a78bfa}.ap-cyan{--acc:#22d3ee}.ap-red{--acc:#f87171}
+
+.ap-bar{display:flex;align-items:center;gap:10px;padding:9px 13px;background:#141414;
+  border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:5;}
+.ap-dots{display:flex;gap:5px;flex:none}
+.ap-dots i{width:9px;height:9px;border-radius:50%;background:#3a3a3a}
+.ap-dots i:first-child{background:#f87171}
+.ap-dots i:nth-child(2){background:#fbbf24}
+.ap-dots i:last-child{background:#34d399}
+.ap-name{flex:1;font-size:12.5px;font-weight:500;color:#f2f2f2;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ap-live{flex:none;display:flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.1em;
+  color:var(--acc);border:1px solid color-mix(in srgb,var(--acc) 40%,transparent);
+  border-radius:999px;padding:3px 9px;}
+.ap-live em{width:5px;height:5px;border-radius:50%;background:var(--acc);
+  animation:apPulse 1.6s ease-in-out infinite;}
+@keyframes apPulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+.ap-kpis{display:flex;flex-wrap:wrap;gap:1px;background:rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.07);}
+.ap-kpi{flex:1 1 84px;background:#0f0f0f;padding:9px 12px;}
+.ap-kpi b{display:block;font-size:17px;font-weight:700;color:#f4ecdc;line-height:1.15;
+  font-variant-numeric:tabular-nums;}
+.ap-kpi span{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:#828282;}
+.ap-kpi.ok b{color:#4ade80}.ap-kpi.warn b{color:#fbbf24}.ap-kpi.bad b{color:#f87171}
+
+.ap-body{padding:11px 12px;}
+.ap-foot{padding:9px 13px 13px;font-size:10.5px;line-height:1.55;color:#7c7c7c;
+  border-top:1px solid rgba(255,255,255,.06);font-style:italic;}
+
+/* shared expandable note */
+.cn-x{display:none;grid-column:1/-1;margin-top:8px;padding-top:8px;
+  border-top:1px solid rgba(255,255,255,.07);font-size:11.5px;line-height:1.6;color:#b3b3b3;}
+.ap-open>.cn-x{display:block}
+
+/* ---- console (health analyzer) ---- */
+.cn{display:flex;flex-direction:column;gap:4px}
+.cn-row{display:grid;grid-template-columns:74px 1fr 108px;gap:10px;align-items:center;
+  background:#101010;border:1px solid rgba(255,255,255,.06);border-left:2px solid #3a3a3a;
+  border-radius:3px;padding:9px 11px;cursor:pointer;transition:background .15s}
+.cn-row:hover{background:#151515}
+.cn-row.ok{border-left-color:#4ade80}.cn-row.warn{border-left-color:#fbbf24}
+.cn-row.bad{border-left-color:#f87171}
+.cn-v{display:block;text-align:center;font-size:9px;font-weight:700;letter-spacing:.08em;
+  padding:4px 0;border-radius:2px}
+.vg{background:rgba(74,222,128,.14);color:#4ade80}
+.vy{background:rgba(251,191,36,.14);color:#fbbf24}
+.vr{background:rgba(248,113,113,.14);color:#f87171}
+.cn-m b{display:block;font-size:12.5px;font-weight:500;color:#efefef}
+.cn-m i{font-style:normal;font-size:10.5px;color:#8a8a8a}
+.cn-r{text-align:right}
+.cn-d{font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.cn-d.up{color:#4ade80}.cn-d.dn{color:#f87171}.cn-d.flat{color:#fbbf24}
+.cn-bar{display:block;height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-top:5px}
+.cn-bar em{display:block;height:100%;border-radius:2px}
+.cn-bar em.up{background:#4ade80}.cn-bar em.dn{background:#f87171}.cn-bar em.flat{background:#fbbf24}
+
+/* ---- board (posting tracker) ---- */
+.bd{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-items:start}
+.bd-col{display:flex;flex-direction:column;gap:5px;min-width:0}
+.bd-head{font-size:9px;font-weight:700;letter-spacing:.09em;padding:6px 9px;border-radius:3px;
+  display:flex;justify-content:space-between;background:rgba(255,255,255,.05);color:#9a9a9a}
+.bd-head.ok{background:rgba(74,222,128,.1);color:#4ade80}
+.bd-head.warn{background:rgba(251,191,36,.1);color:#fbbf24}
+.bd-head.bad{background:rgba(248,113,113,.1);color:#f87171}
+.bd-card{background:#101010;border:1px solid rgba(255,255,255,.06);border-radius:3px;
+  padding:9px;cursor:pointer;transition:background .15s}
+.bd-card:hover{background:#161616}
+.bd-card.warn{border-color:rgba(251,191,36,.28)}
+.bd-card.bad{border-color:rgba(248,113,113,.32)}
+.bd-card>b{display:block;font-size:11.5px;font-weight:500;color:#efefef;margin-bottom:5px;
+  overflow-wrap:anywhere}
+.bd-flag{display:inline-block;font-size:8.5px;font-weight:700;letter-spacing:.07em;
+  background:rgba(251,191,36,.14);color:#fbbf24;padding:2px 6px;border-radius:2px;margin-bottom:5px}
+.bd-flag.bad{background:rgba(248,113,113,.14);color:#f87171}
+.bd-m{display:flex;gap:8px;flex-wrap:wrap}
+.bd-m span{font-size:11.5px;font-weight:600;color:#e6e6e6;font-variant-numeric:tabular-nums}
+.bd-m span.up{color:#4ade80}.bd-m span.dn{color:#f87171}
+.bd-m i{display:block;font-style:normal;font-size:8.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:#7e7e7e;font-weight:400}
+
+/* ---- calculator (greenlight) ---- */
+.gl{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:8px}
+.gl-card{background:#101010;border:1px solid rgba(255,255,255,.07);border-radius:3px;
+  padding:11px;cursor:pointer;transition:background .15s}
+.gl-card:hover{background:#151515}
+.gl-card.go{border-top:2px solid #4ade80}
+.gl-card.cond{border-top:2px solid #fbbf24}
+.gl-card.no{border-top:2px solid #f87171}
+.gl-top{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.gl-top b{flex:1;font-size:12.5px;font-weight:500;color:#efefef;min-width:0}
+.gl-stamp{flex:none;font-size:9px;font-weight:800;letter-spacing:.09em;padding:4px 8px;
+  border-radius:2px;border:1px solid}
+.gl-stamp.go{color:#4ade80;border-color:rgba(74,222,128,.5);background:rgba(74,222,128,.1)}
+.gl-stamp.cond{color:#fbbf24;border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.1)}
+.gl-stamp.no{color:#f87171;border-color:rgba(248,113,113,.5);background:rgba(248,113,113,.1)}
+.gl-gauge{position:relative;height:6px;background:rgba(255,255,255,.07);border-radius:3px}
+.gl-gauge em{display:block;height:100%;border-radius:3px;background:#4ade80}
+.gl-gauge em.short{background:#f87171}
+.gl-gauge u{position:absolute;top:-3px;width:2px;height:12px;background:#e9e9e9;
+  transform:translateX(-1px)}
+.gl-leg{display:flex;justify-content:space-between;margin-top:5px;font-size:9.5px;color:#858585}
+.gl-leg .hit{color:#4ade80}.gl-leg .tight{color:#fbbf24}.gl-leg .miss{color:#f87171}
+.gl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.gl-grid span{font-size:11.5px;font-weight:600;color:#e4e4e4;font-variant-numeric:tabular-nums}
+.gl-grid span.warn{color:#fbbf24}.gl-grid span.bad{color:#f87171}
+.gl-grid i{display:block;font-style:normal;font-size:8.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:#7e7e7e;font-weight:400}
+
+/* ---- timeline (lifecycle) ---- */
+.tl-scale{display:flex;justify-content:space-between;padding:0 96px 5px 110px;
+  font-size:8.5px;letter-spacing:.08em;color:#6f6f6f}
+.lc{display:flex;flex-direction:column;gap:3px}
+.lc-row{display:grid;grid-template-columns:110px 1fr 74px;gap:10px;align-items:center;
+  background:#101010;border:1px solid rgba(255,255,255,.05);border-radius:3px;
+  padding:8px 11px;cursor:pointer;transition:background .15s}
+.lc-row:hover{background:#161616}
+.lc-row.warn{border-color:rgba(251,191,36,.2)}
+.lc-row.bad{border-color:rgba(248,113,113,.26)}
+.lc-n b{display:block;font-size:12px;font-weight:500;color:#efefef}
+.lc-n i{font-style:normal;font-size:9.5px;color:#7e7e7e}
+.lc-tr{position:relative;height:9px;background:rgba(255,255,255,.05);border-radius:2px}
+.lc-tr em{position:absolute;top:0;height:100%;border-radius:2px}
+.lc-tr em.peak{background:linear-gradient(90deg,#a78bfa,#c4b5fd)}
+.lc-tr em.pit{background:repeating-linear-gradient(45deg,#f87171,#f87171 3px,#7f2d2d 3px,#7f2d2d 6px)}
+.lc-num{text-align:right}
+.lc-num span{font-size:13px;font-weight:700;color:#d8d8d8;font-variant-numeric:tabular-nums}
+.lc-num span.good{color:#4ade80}.lc-num span.mid{color:#fbbf24}.lc-num span.bad{color:#f87171}
+.lc-num i{display:block;font-style:normal;font-size:8.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:#7e7e7e}
+.tl-key{display:flex;gap:14px;margin-top:9px;font-size:9.5px;color:#858585}
+.tl-key span{display:flex;align-items:center;gap:5px}
+.tl-key em{width:16px;height:7px;border-radius:2px}
+.tl-key em.peak{background:linear-gradient(90deg,#a78bfa,#c4b5fd)}
+.tl-key em.pit{background:repeating-linear-gradient(45deg,#f87171,#f87171 3px,#7f2d2d 3px,#7f2d2d 6px)}
+
+/* ---- diagnostics feed (transcript) ---- */
+.dg{display:flex;flex-direction:column;gap:5px}
+.dg-row{background:#101010;border:1px solid rgba(255,255,255,.06);border-radius:3px;
+  padding:10px 11px;cursor:pointer;transition:background .15s}
+.dg-row:hover{background:#151515}
+.dg-row.warn{border-left:2px solid #fbbf24}
+.dg-t b{display:block;font-size:12.5px;font-weight:500;color:#efefef;line-height:1.35;
+  overflow-wrap:anywhere}
+.dg-t i{font-style:normal;font-size:10px;color:#828282}
+.dg-f{display:flex;flex-wrap:wrap;gap:4px;margin:7px 0 8px}
+.fl{font-size:8.5px;font-weight:700;letter-spacing:.06em;padding:3px 7px;border-radius:2px}
+.fl.gem{background:rgba(34,211,238,.13);color:#22d3ee}
+.fl.star{background:rgba(224,180,87,.15);color:#e0b457}
+.fl.bell{background:rgba(167,139,250,.14);color:#a78bfa}
+.fl.cut{background:rgba(251,191,36,.14);color:#fbbf24}
+.fl.low{background:rgba(248,113,113,.14);color:#f87171}
+.dg-b{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dg-b i{display:block;font-style:normal;font-size:9px;letter-spacing:.05em;color:#8a8a8a;
+  margin-bottom:4px;font-variant-numeric:tabular-nums}
+.dg-b em{display:block;height:4px;border-radius:2px;background:#4ade80}
+.dg-b em.dn{background:#f87171}
+
+/* ---- live feed (realtime) ---- */
+.rt{display:flex;flex-direction:column;gap:4px}
+.rt-row{display:grid;grid-template-columns:62px 1fr 104px;gap:10px;align-items:center;
+  background:#101010;border:1px solid rgba(255,255,255,.06);border-radius:3px;
+  padding:9px 11px;cursor:pointer;transition:background .15s}
+.rt-row:hover{background:#151515}
+.rt-new{display:block;text-align:center;font-size:8.5px;font-weight:800;letter-spacing:.09em;
+  background:rgba(74,222,128,.15);color:#4ade80;padding:4px 0;border-radius:2px}
+.rt-p{display:block;text-align:center;font-size:11.5px;font-weight:700;
+  font-variant-numeric:tabular-nums}
+.rt-p.up{color:#4ade80}
+.rt-m b{display:block;font-size:12.5px;font-weight:500;color:#efefef;line-height:1.35;
+  overflow-wrap:anywhere}
+.rt-m i{font-style:normal;font-size:10px;color:#828282}
+.rt-r{text-align:right}
+.rt-r b{display:block;font-size:14px;font-weight:700;color:#f4ecdc;
+  font-variant-numeric:tabular-nums}
+.rt-r span{font-size:10px;font-variant-numeric:tabular-nums}
+.rt-r span.up{color:#4ade80}.rt-r span.flat{color:#fbbf24}
+
+@media (max-width:760px){
+  .cn-row{grid-template-columns:64px 1fr;}
+  .cn-r{grid-column:2;text-align:left;}
+  .bd{grid-template-columns:1fr;}
+  .lc-row{grid-template-columns:92px 1fr;}
+  .lc-num{grid-column:2;text-align:left;display:flex;gap:6px;align-items:baseline;}
+  .tl-scale{padding:0 0 5px;}
+  .rt-row{grid-template-columns:56px 1fr;}
+  .rt-r{grid-column:2;text-align:left;display:flex;gap:8px;align-items:baseline;}
+  .gl-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+<script>
+function apT(el){ el.classList.toggle('ap-open'); }
+</script>
+
+<style>
+/* ===== plain-language box, shown to non-specialists first ===== */
+.plain-box{background:rgba(201,169,110,.07);border-left:2px solid #c9a96e;border-radius:3px;
+  padding:11px 14px;margin-bottom:18px;}
+.plain-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:#c9a96e;margin-bottom:5px;}
+.plain-box p{margin:0;font-size:14px;line-height:1.6;color:#e8e2d4;}
+
+/* ===== light / paper themed demos ===== */
+.ap-paper{background:#f5f3ef;color:#1c1c1c;}
+.ap-light{background:#fbfbfc;color:#1c1c1c;}
+.ap-studio{background:#0d0d0f;}
+.ap-paper .ap-foot,.ap-light .ap-foot{color:#6b6b6b;border-top-color:rgba(0,0,0,.08);}
+.ap-paper .iv-hint,.ap-light .iv-hint{color:#6f6f6f;}
+
+/* ---- trust engine ---- */
+.tw-hero{background:#151513;color:#f4f2ee;padding:16px 16px 14px;}
+.tw-h1{font-size:19px;font-weight:800;letter-spacing:-.01em;}
+.tw-h1 span{color:#e06a5a;}
+.tw-sub{font-size:11px;color:#a9a5a0;margin-top:4px;}
+.tw-kpis{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.tw-kpis span{flex:1 1 62px;background:rgba(255,255,255,.05);border-radius:4px;padding:7px 9px;}
+.tw-kpis b{display:block;font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;}
+.tw-kpis b.g{color:#5bc47f}.tw-kpis b.r{color:#f08d80}.tw-kpis b.y{color:#e0b457}.tw-kpis b.b{color:#7aa7f0}
+.tw-kpis i{font-style:normal;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:#9d9993;}
+.tw-kpis2 span{background:#fff;border:1px solid rgba(0,0,0,.07);}
+.tw-kpis2 b{color:#1c1c1c}.tw-kpis2 i{color:#75726d}
+.tw-sync{font-size:9.5px;color:#7d7a75;margin-top:9px;}
+.tw-tabs{display:flex;gap:16px;padding:0 16px;background:#fff;border-bottom:1px solid rgba(0,0,0,.08);}
+.tw-tab{background:none;border:0;font:inherit;font-size:12px;color:#6f6f6f;padding:11px 0;
+  border-bottom:2px solid transparent;cursor:pointer;}
+.tw-tab.is-on{color:#1c1c1c;font-weight:600;border-bottom-color:#e06a5a;}
+.tw-body{padding:14px 16px 16px;}
+.tw-verdict{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-bottom:12px;
+  border-bottom:1px solid rgba(0,0,0,.08);}
+.tw-lab{font-size:9px;font-weight:700;letter-spacing:.11em;color:#8a8781;width:100%;}
+.tw-pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;}
+.tw-pill.y{background:#fdf0cf;color:#8a6100;}
+.tw-pill.o{background:#e9eef7;color:#3f5d90;border:1px dashed #9db3d6;}
+.tw-score{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;}
+.tw-meta{font-size:11px;color:#75726d;}
+.tw-axis{margin-top:14px;cursor:pointer;}
+.tw-ax-h{display:flex;align-items:center;gap:9px;}
+.tw-ax{font-size:11px;font-weight:700;padding:3px 8px;border-radius:3px;}
+.tw-ax.g{background:#dff2e3;color:#1f7a43;}
+.tw-ax.y{background:#fdf0cf;color:#8a6100;}
+.tw-ax-h b{font-size:12.5px;}
+.tw-ax-h em{font-style:normal;font-size:9.5px;color:#a4a09a;margin-left:auto;}
+.tw-axis p{margin:6px 0 0;font-size:12.5px;line-height:1.6;color:#3a3a38;}
+.tw-quote{border-left:2px solid #cfcac1;padding-left:11px;font-style:italic;font-size:12px;
+  color:#6a6761;border-top:0!important;margin-top:8px!important;padding-top:2px!important;}
+.tw-op{background:#f0f3ec;border-radius:4px;padding:12px 14px;margin-top:16px;}
+.tw-op b{font-size:12px;}
+.tw-op p{margin:6px 0 0;font-size:12.5px;line-height:1.62;color:#3a3a38;}
+.tw-rec{margin-top:14px;font-size:13px;font-weight:700;}
+.tw-req{margin-top:10px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:4px;
+  padding:11px 13px;font-size:12px;line-height:1.6;color:#3a3a38;}
+.tw-sig{margin-top:14px;font-size:10px;color:#8a8781;line-height:1.5;}
+.tw-acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;}
+.tw-btn{font-size:11px;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:5px;padding:6px 11px;}
+.tw-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:9px;margin-top:11px;}
+.tw-c{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:5px;padding:12px;cursor:pointer;}
+.tw-c-h{display:flex;gap:9px;align-items:flex-start;}
+.tw-c-h b{flex:1;font-size:12.5px;line-height:1.4;}
+.tw-star{flex:none;font-size:11px;font-weight:700;color:#c0392b;background:#fdeceb;
+  border-radius:999px;padding:3px 8px;}
+.tw-c-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.ch{font-size:10px;padding:3px 8px;border-radius:999px;background:#f1f0ed;color:#5c5a56;}
+.ch.r{background:#fdeceb;color:#b03024;}
+.ch.g{background:#e6f4ea;color:#1f7a43;}
+.ch.w{background:#fdf3dd;color:#8a6100;}
+.tw-c .cn-x{border-top-color:rgba(0,0,0,.08);}
+.tw-c .cn-x p{color:#3a3a38;}
+.tw-c .cn-x b{color:#1c1c1c;}
+.tw-lists{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px;}
+.tw-lists span{font-size:11px;background:#fff;border:1px solid rgba(0,0,0,.1);
+  border-radius:999px;padding:5px 11px;color:#4a4844;}
+
+/* ---- video QA ---- */
+.qa-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.09);}
+.qa-bar>b{font-size:14px;font-weight:800;}
+.qa-seg{display:flex;background:#eff0f2;border-radius:6px;padding:2px;}
+.qa-seg em{font-style:normal;font-size:11px;padding:4px 11px;border-radius:4px;color:#63666b;}
+.qa-seg em.is-on{background:#fff;color:#1c1c1c;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.1);}
+.qa-rows{margin-left:auto;font-size:10.5px;color:#7b7e83;}
+.qa-tabs{display:flex;gap:18px;padding:0 14px;background:#fff;border-bottom:1px solid rgba(0,0,0,.07);}
+.qa-tabs em{font-style:normal;font-size:11.5px;color:#6f7276;padding:9px 0;border-bottom:2px solid transparent;}
+.qa-tabs em.is-on{color:#1a56c4;font-weight:600;border-bottom-color:#1a56c4;}
+.qa-filters{display:flex;flex-wrap:wrap;gap:5px;padding:9px 14px;background:#f6f7f8;}
+.qa-filters span{font-size:10.5px;background:#fff;border:1px solid rgba(0,0,0,.12);
+  border-radius:4px;padding:4px 9px;color:#55585c;}
+.qa-body{padding:11px 14px 14px;}
+.qa-list{display:flex;flex-direction:column;gap:2px;}
+.qa-row{display:grid;grid-template-columns:76px 116px 1fr 84px;gap:10px;align-items:center;
+  padding:9px 10px;border-radius:3px;background:#fff;border:1px solid rgba(0,0,0,.06);font-size:12px;}
+.qa-row.bad{background:#fdecea;border-color:#f3c9c3;cursor:pointer;}
+.qa-st{font-size:10px;color:#7b7e83;}
+.qa-st.r{font-weight:800;color:#b3261e;}
+.qa-ch{font-size:11px;color:#55585c;}
+.qa-ti{color:#1a56c4;line-height:1.4;}
+.qa-todo{font-style:normal;display:inline-block;font-size:9px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;background:#fdf3dd;color:#8a6100;border-radius:2px;padding:2px 6px;margin-left:6px;}
+.qa-nm{font-size:10.5px;color:#7b7e83;text-align:right;font-variant-numeric:tabular-nums;}
+.qa-x{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  border-top-color:rgba(0,0,0,.1)!important;}
+.qa-col b{display:block;font-size:11px;color:#b3261e;margin-bottom:4px;}
+.qa-col.fix b{color:#1f7a43;}
+.qa-col p{margin:0;font-size:12px;line-height:1.6;color:#3a3a38;}
+.qa-route{grid-column:1/-1;font-size:10.5px;color:#6f7276;border-top:1px dashed rgba(0,0,0,.12);
+  padding-top:7px;}
+
+/* ---- kids studio ---- */
+.ks{display:grid;grid-template-columns:172px 1fr;min-height:100%;}
+.ks-side{background:#141418;padding:14px 12px;border-right:1px solid rgba(255,255,255,.06);}
+.ks-brand b{display:block;font-size:13px;color:#f2f2f4;}
+.ks-brand i{font-style:normal;font-size:9.5px;color:#83838c;line-height:1.4;display:block;margin-top:3px;}
+.ks-nav{display:flex;flex-direction:column;gap:2px;margin-top:14px;}
+.ks-nav em{font-style:normal;font-size:11px;color:#9a9aa4;padding:6px 9px;border-radius:5px;}
+.ks-nav em.is-on{background:#6c5ce7;color:#fff;font-weight:600;}
+.ks-upd{margin-top:16px;background:#1b1b21;border-radius:5px;padding:9px;}
+.ks-upd b{display:block;font-size:10px;color:#d6d6dc;margin-bottom:4px;}
+.ks-upd span{display:block;font-size:9.5px;color:#83838c;}
+.ks-main{padding:13px 14px 14px;min-width:0;}
+.ks-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:7px;}
+.ks-kpis div{background:#17171c;border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:9px 11px;}
+.ks-kpis b{display:block;font-size:19px;font-weight:800;color:#f2f2f4;}
+.ks-kpis span{font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:#83838c;}
+.ks-hot{margin-top:9px;background:#17171c;border:1px solid rgba(255,255,255,.06);
+  border-radius:6px;padding:10px 11px;}
+.ks-hot b{display:block;font-size:10px;letter-spacing:.06em;color:#f0857a;margin-bottom:7px;}
+.ks-hot span{display:inline-block;font-size:10.5px;color:#dcdce2;border:1px solid rgba(240,133,122,.4);
+  border-radius:999px;padding:3px 9px;margin:0 4px 4px 0;}
+.ks-h{font-size:13px;font-weight:700;color:#f2f2f4;margin:16px 0 4px;}
+.ks-h em{font-style:normal;font-size:10px;font-weight:400;color:#83838c;margin-left:7px;}
+.ks-arch{display:flex;flex-direction:column;gap:5px;margin-top:8px;}
+.ks-a{background:#17171c;border:1px solid rgba(255,255,255,.06);border-radius:6px;
+  padding:10px 11px;cursor:pointer;}
+.ks-a:hover{background:#1c1c22;}
+.ks-a-h{display:flex;align-items:flex-start;gap:10px;}
+.ks-a-h b{flex:1;font-size:12.5px;color:#f2f2f4;line-height:1.35;}
+.ks-lift{flex:none;font-size:14px;font-weight:800;color:#4ade80;font-variant-numeric:tabular-nums;}
+.ks-a-m{font-size:10.5px;color:#83838c;margin-top:5px;}
+.ks-a .cn-x{border-top-color:rgba(255,255,255,.07);}
+.ks-st{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.ks-st em{font-style:normal;font-size:10px;color:#b9b9c2;background:#23232b;border-radius:4px;padding:4px 9px;}
+.ks-tv{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+.ks-v{display:grid;grid-template-columns:1fr 78px 74px;gap:9px;align-items:center;
+  background:#17171c;border:1px solid rgba(255,255,255,.05);border-radius:5px;padding:8px 10px;}
+.ks-v b{font-size:11.5px;color:#eeeef2;display:block;}
+.ks-v i{font-style:normal;font-size:9.5px;color:#7e7e88;display:block;margin-top:2px;}
+.ks-v span{font-size:13px;font-weight:700;color:#f2f2f4;text-align:right;font-variant-numeric:tabular-nums;}
+.ks-v em{font-style:normal;font-size:9.5px;color:#83838c;text-align:right;}
+.ks-v em.fast{color:#4ade80;}
+.ks-health{margin-top:14px;background:#17171c;border:1px solid rgba(255,255,255,.06);
+  border-radius:6px;padding:10px 11px;}
+.ks-health b{display:block;font-size:10px;letter-spacing:.06em;color:#a78bfa;margin-bottom:7px;}
+.ks-health span{display:block;font-size:11px;color:#dcdce2;padding:3px 0;}
+.ks-health span.ok::before{content:"\\25CF";color:#4ade80;margin-right:7px;font-size:9px;}
+.ks-health i{display:block;font-style:normal;font-size:9.5px;color:#7e7e88;margin-top:6px;}
+
+@media (max-width:760px){
+  .ks{grid-template-columns:1fr;}
+  .ks-side{display:flex;gap:12px;overflow-x:auto;border-right:0;border-bottom:1px solid rgba(255,255,255,.06);}
+  .ks-nav{flex-direction:row;margin-top:0;}
+  .ks-nav em{white-space:nowrap;}
+  .ks-upd{display:none;}
+  .qa-row{grid-template-columns:70px 1fr;}
+  .qa-ch,.qa-nm{grid-column:2;text-align:left;}
+  .qa-x{grid-template-columns:1fr;}
+  .ks-v{grid-template-columns:1fr 70px;}
+  .ks-v em{grid-column:2;}
+}
+</style>
 </body>
 </html>
